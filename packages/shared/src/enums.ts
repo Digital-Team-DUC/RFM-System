@@ -1,0 +1,189 @@
+export enum RoleName {
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  COMPANY_ADMIN = 'COMPANY_ADMIN',
+  PROJECT_MANAGER = 'PROJECT_MANAGER',
+  SALES_MANAGER = 'SALES_MANAGER',
+  SALES_AGENT = 'SALES_AGENT',
+  ACCOUNTANT = 'ACCOUNTANT',
+  CASHIER = 'CASHIER',
+  LEGAL_OFFICER = 'LEGAL_OFFICER',
+  AUDITOR = 'AUDITOR',
+}
+
+export enum PermissionCode {
+  // Properties & Projects
+  PROPERTIES_READ = 'properties.read',
+  PROPERTIES_CREATE = 'properties.create',
+  PROPERTIES_UPDATE = 'properties.update',
+  PROPERTIES_DELETE = 'properties.delete',
+  PROJECTS_MANAGE = 'projects.manage',
+  
+  // CRM & Sales
+  CRM_READ = 'crm.read',
+  CRM_MANAGE = 'crm.manage',
+  SALES_CREATE = 'sales.create',
+  BOOKINGS_APPROVE = 'bookings.approve',
+  BOOKINGS_CANCEL = 'bookings.cancel',
+  CONTRACTS_MANAGE = 'contracts.manage',
+  CONTRACTS_APPROVE = 'contracts.approve',
+  
+  // Payments & Finance
+  PAYMENTS_RECEIVE = 'payments.receive',
+  PAYMENTS_VERIFY = 'payments.verify',
+  PAYMENTS_REFUND = 'payments.refund',
+  EXPENSES_CREATE = 'expenses.create',
+  EXPENSES_APPROVE = 'expenses.approve',
+  COMMISSIONS_MANAGE = 'commissions.manage',
+  COMMISSIONS_APPROVE = 'commissions.approve',
+  
+  // Accounting & Reports
+  ACCOUNTING_READ = 'accounting.read',
+  ACCOUNTING_POST = 'accounting.post',
+  ACCOUNTING_CLOSE = 'accounting.close',
+  REPORTS_EXPORT = 'reports.export',
+  
+  // Admin & System
+  USERS_MANAGE = 'users.manage',
+  SETTINGS_MANAGE = 'settings.manage',
+  AUDIT_READ = 'audit.read',
+}
+
+export enum ProjectStatus {
+  PLANNING = 'PLANNING',
+  ACTIVE = 'ACTIVE',
+  NEAR_COMPLETION = 'NEAR_COMPLETION',
+  COMPLETED = 'COMPLETED',
+  ON_HOLD = 'ON_HOLD',
+}
+
+export enum PropertyType {
+  LAND_PLOT = 'LAND_PLOT',
+  VILLA_SINGLE = 'VILLA_SINGLE',
+  VILLA_TWIN = 'VILLA_TWIN',
+  TOWNHOUSE = 'TOWNHOUSE',
+  SHOPHOUSE = 'SHOPHOUSE',
+  CONDO_STUDIO = 'CONDO_STUDIO',
+  CONDO_1BED = 'CONDO_1BED',
+  CONDO_2BED = 'CONDO_2BED',
+  CONDO_PENTHOUSE = 'CONDO_PENTHOUSE',
+  COMMERCIAL = 'COMMERCIAL',
+}
+
+export enum PropertyStatus {
+  AVAILABLE = 'AVAILABLE',
+  RESERVED = 'RESERVED',
+  BOOKING_PENDING = 'BOOKING_PENDING',
+  DEPOSIT_PENDING = 'DEPOSIT_PENDING',
+  CONTRACT_PENDING = 'CONTRACT_PENDING',
+  SOLD = 'SOLD',
+  INSTALLMENT = 'INSTALLMENT',
+  TRANSFERRED = 'TRANSFERRED',
+  ON_HOLD = 'ON_HOLD',
+  UNDER_DEVELOPMENT = 'UNDER_DEVELOPMENT',
+  CANCELLED = 'CANCELLED',
+  BLOCKED = 'BLOCKED',
+}
+
+export enum CustomerType {
+  INDIVIDUAL = 'INDIVIDUAL',
+  CORPORATE = 'CORPORATE',
+  FOREIGN_INVESTOR = 'FOREIGN_INVESTOR',
+}
+
+export enum LeadStage {
+  NEW = 'NEW',
+  CONTACTED = 'CONTACTED',
+  QUALIFIED = 'QUALIFIED',
+  VIEWING_SCHEDULED = 'VIEWING_SCHEDULED',
+  NEGOTIATION = 'NEGOTIATION',
+  BOOKING = 'BOOKING',
+  WON = 'WON',
+  LOST = 'LOST',
+}
+
+export enum BookingStatus {
+  DRAFT = 'DRAFT',
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
+  APPROVED = 'APPROVED',
+  DEPOSIT_RECEIVED = 'DEPOSIT_RECEIVED',
+  CONTRACTED = 'CONTRACTED',
+  CANCELLED = 'CANCELLED',
+  EXPIRED = 'EXPIRED',
+}
+
+export enum ContractStatus {
+  DRAFT = 'DRAFT',
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
+  APPROVED = 'APPROVED',
+  SIGNED = 'SIGNED',
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+  TERMINATED = 'TERMINATED',
+}
+
+export enum PaymentPlanType {
+  FULL_PAYMENT = 'FULL_PAYMENT',
+  DOWN_PAYMENT_BALANCE = 'DOWN_PAYMENT_BALANCE',
+  EQUAL_MONTHLY = 'EQUAL_MONTHLY',
+  CUSTOM_INSTALLMENTS = 'CUSTOM_INSTALLMENTS',
+  CONSTRUCTION_MILESTONES = 'CONSTRUCTION_MILESTONES',
+  BANK_FINANCED = 'BANK_FINANCED',
+  COMPANY_FINANCED = 'COMPANY_FINANCED',
+}
+
+export enum InstallmentStatus {
+  UPCOMING = 'UPCOMING',
+  DUE = 'DUE',
+  PARTIALLY_PAID = 'PARTIALLY_PAID',
+  PAID = 'PAID',
+  OVERDUE = 'OVERDUE',
+  WAIVED = 'WAIVED',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum PaymentMethod {
+  CASH = 'CASH',
+  BANK_TRANSFER = 'BANK_TRANSFER',
+  KHQR_SCAN = 'KHQR_SCAN',
+  CHEQUE = 'CHEQUE',
+  CREDIT_CARD = 'CREDIT_CARD',
+  OTHER = 'OTHER',
+}
+
+export enum PaymentVerificationStatus {
+  PENDING = 'PENDING',
+  VERIFIED = 'VERIFIED',
+  REJECTED = 'REJECTED',
+}
+
+export enum AccountType {
+  ASSET = 'ASSET',
+  LIABILITY = 'LIABILITY',
+  EQUITY = 'EQUITY',
+  REVENUE = 'REVENUE',
+  EXPENSE = 'EXPENSE',
+}
+
+export enum ExpenseStatus {
+  DRAFT = 'DRAFT',
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum CommissionStatus {
+  PENDING_ELIGIBILITY = 'PENDING_ELIGIBILITY',
+  ELIGIBLE = 'ELIGIBLE',
+  APPROVED = 'APPROVED',
+  PARTIALLY_PAID = 'PARTIALLY_PAID',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum Currency {
+  USD = 'USD',
+  KHR = 'KHR',
+}

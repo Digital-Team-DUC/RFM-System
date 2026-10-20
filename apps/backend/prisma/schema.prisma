@@ -1,0 +1,979 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -----------------------------------------------------------------------------
+// 1. ORGANIZATION, USERS & PERMISSIONS
+// -----------------------------------------------------------------------------
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  taxNumber   String?
+  logoUrl     String?
+  address     String?
+  phone       String?
+  email       String?
+  currency    String   @default("USD")
+  settings    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users              User[]
+  roles              Role[]
+  projects           Project[]
+  customers          Customer[]
+  financialAccounts  FinancialAccount[]
+  chartOfAccounts    ChartOfAccount[]
+  fiscalPeriods      FiscalPeriod[]
+  journalEntries     JournalEntry[]
+  auditLogs          AuditLog[]
+  salesAgents        SalesAgent[]
+  commissionPolicies CommissionPolicy[]
+
+  @@map("organizations")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  organizationId String
+  email          String    @unique
+  passwordHash   String
+  fullName       String
+  khmerName      String?
+  phone          String?
+  avatarUrl      String?
+  isActive       Boolean   @default(true)
+  lastLoginAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userRoles          UserRole[]
+  projectMemberships ProjectMembership[]
+  refreshTokens      RefreshToken[]
+  loginEvents        LoginEvent[]
+  auditLogs          AuditLog[]
+  assignedCustomers  Customer[]          @relation("AssignedAgent")
+  assignedLeads      Lead[]              @relation("AssignedLeadAgent")
+  bookingsCreated    Booking[]           @relation("BookingAgent")
+  bookingsApproved   Booking[]           @relation("BookingApprover")
+  paymentsReceived   Payment[]           @relation("PaymentReceiver")
+  paymentsVerified   Payment[]           @relation("PaymentVerifier")
+  expensesRequested  Expense[]           @relation("ExpenseRequester")
+  expensesApproved   Expense[]           @relation("ExpenseApprover")
+  notifications      Notification[]
+  preference         NotificationPreference?
+  salesAgentProfile  SalesAgent?
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("users")
+}
+
+model Role {
+  id             String   @id @default(uuid())
+  organizationId String
+  name           String
+  description    String?
+  isSystem       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@unique([organizationId, name])
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  description String
+  module      String
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String   @id @default(uuid())
+  roleId       String
+  permissionId String
+  createdAt    DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model ProjectMembership {
+  id            String   @id @default(uuid())
+  userId        String
+  projectId     String
+  roleInProject String   @default("MEMBER")
+  createdAt     DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+  @@map("project_memberships")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  isRevoked Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model LoginEvent {
+  id            String   @id @default(uuid())
+  userId        String?
+  ipAddress     String?
+  userAgent     String?
+  isSuccess     Boolean
+  failureReason String?
+  createdAt     DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("login_events")
+}
+
+model AuditLog {
+  id             String   @id @default(uuid())
+  organizationId String
+  userId         String?
+  entityType     String
+  entityId       String
+  action         String
+  previousState  Json?
+  newState       Json?
+  ipAddress      String?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+// -----------------------------------------------------------------------------
+// 2. PROJECTS, PROPERTIES & MASTER PLAN
+// -----------------------------------------------------------------------------
+
+model Project {
+  id             String    @id @default(uuid())
+  organizationId String
+  name           String
+  code           String    @unique
+  type           String    @default("MIXED_DEVELOPMENT")
+  status         String    @default("ACTIVE")
+  address        String?
+  province       String    @default("Phnom Penh")
+  district       String?
+  commune        String?
+  latitude       Decimal?  @db.Decimal(10, 7)
+  longitude      Decimal?  @db.Decimal(10, 7)
+  totalArea      Decimal   @default(0) @db.Decimal(12, 2)
+  landCost       Decimal   @default(0) @db.Decimal(14, 2)
+  budget         Decimal   @default(0) @db.Decimal(14, 2)
+  launchDate     DateTime?
+  completionDate DateTime?
+  managerId      String?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization     Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  properties       Property[]
+  memberships      ProjectMembership[]
+  masterPlanAssets MasterPlanAsset[]
+  bookings         Booking[]
+  contracts        Contract[]
+  expenses         Expense[]
+  incomeRecords    IncomeRecord[]
+
+  @@index([organizationId])
+  @@map("projects")
+}
+
+model Property {
+  id                String   @id @default(uuid())
+  projectId         String
+  code              String   @unique
+  unitNumber        String?
+  block             String?
+  zone              String?
+  floor             Int?
+  propertyType      String   @default("LAND_PLOT")
+  title             String
+  landArea          Decimal  @default(0) @db.Decimal(10, 2)
+  buildingArea      Decimal  @default(0) @db.Decimal(10, 2)
+  bedrooms          Int      @default(0)
+  bathrooms         Int      @default(0)
+  facingDirection   String?
+  acquisitionCost   Decimal  @default(0) @db.Decimal(14, 2)
+  constructionCost  Decimal  @default(0) @db.Decimal(14, 2)
+  listingPrice      Decimal  @default(0) @db.Decimal(14, 2)
+  sellingPrice      Decimal  @default(0) @db.Decimal(14, 2)
+  discountLimit     Decimal  @default(0) @db.Decimal(14, 2)
+  reservationAmount Decimal  @default(1000) @db.Decimal(14, 2)
+  status            String   @default("AVAILABLE")
+  ownershipType     String?  @default("FREEHOLD")
+  coordinates       String?
+  svgShapeId        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  project          Project                 @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  documents        PropertyDocument[]
+  images           PropertyImage[]
+  masterPlanShapes MasterPlanShape[]
+  statusHistory    PropertyStatusHistory[]
+  bookings         Booking[]
+  contracts        Contract[]
+  viewings         PropertyViewing[]
+
+  @@index([projectId])
+  @@index([status])
+  @@index([propertyType])
+  @@map("properties")
+}
+
+model PropertyDocument {
+  id         String   @id @default(uuid())
+  propertyId String
+  title      String
+  fileType   String
+  fileUrl    String
+  fileSize   Int      @default(0)
+  uploadedBy String?
+  createdAt  DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+  @@map("property_documents")
+}
+
+model PropertyImage {
+  id         String   @id @default(uuid())
+  propertyId String
+  url        String
+  isPrimary  Boolean  @default(false)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+  @@map("property_images")
+}
+
+model MasterPlanAsset {
+  id         String   @id @default(uuid())
+  projectId  String
+  title      String
+  fileUrl    String?
+  svgContent String?  @db.Text
+  width      Int      @default(1200)
+  height     Int      @default(800)
+  createdAt  DateTime @default(now())
+
+  project Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  shapes  MasterPlanShape[]
+
+  @@index([projectId])
+  @@map("master_plan_assets")
+}
+
+model MasterPlanShape {
+  id          String   @id @default(uuid())
+  assetId     String
+  propertyId  String?
+  shapeType   String   @default("polygon") // polygon, rect, path, circle
+  coordinates String   @db.Text // SVG point data / coordinates
+  label       String
+  colorCode   String?
+  status      String   @default("AVAILABLE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  asset    MasterPlanAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  property Property?       @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+
+  @@index([assetId])
+  @@index([propertyId])
+  @@map("master_plan_shapes")
+}
+
+model PropertyStatusHistory {
+  id         String   @id @default(uuid())
+  propertyId String
+  fromStatus String
+  toStatus   String
+  reason     String?
+  changedBy  String?
+  createdAt  DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+  @@map("property_status_history")
+}
+
+// -----------------------------------------------------------------------------
+// 3. CRM, LEADS, VIEWINGS & CUSTOMERS
+// -----------------------------------------------------------------------------
+
+model Customer {
+  id               String   @id @default(uuid())
+  organizationId   String
+  fullName         String
+  khmerName        String?
+  phone            String
+  email            String?
+  address          String?
+  customerType     String   @default("INDIVIDUAL")
+  idType           String?  @default("NATIONAL_ID")
+  idNumber         String?
+  preferredChannel String?  @default("TELEGRAM")
+  leadSource       String?  @default("DIRECT")
+  assignedAgentId  String?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  organization  Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedAgent User?              @relation("AssignedAgent", fields: [assignedAgentId], references: [id], onDelete: SetNull)
+  documents     CustomerDocument[]
+  leads         Lead[]
+  bookings      Booking[]
+  contracts     Contract[]
+  payments      Payment[]
+  viewings      PropertyViewing[]
+
+  @@index([organizationId])
+  @@index([phone])
+  @@map("customers")
+}
+
+model CustomerDocument {
+  id         String   @id @default(uuid())
+  customerId String
+  docType    String
+  fileUrl    String
+  fileName   String
+  uploadedBy String?
+  createdAt  DateTime @default(now())
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@map("customer_documents")
+}
+
+model Lead {
+  id                 String    @id @default(uuid())
+  organizationId     String
+  customerId         String?
+  fullName           String
+  phone              String
+  email              String?
+  stage              String    @default("NEW")
+  leadSource         String?   @default("FACEBOOK")
+  budgetMin          Decimal?  @db.Decimal(14, 2)
+  budgetMax          Decimal?  @db.Decimal(14, 2)
+  interestedProperty String?
+  assignedAgentId    String?
+  lostReason         String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  customer      Customer?      @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  assignedAgent User?          @relation("AssignedLeadAgent", fields: [assignedAgentId], references: [id], onDelete: SetNull)
+  activities    LeadActivity[]
+
+  @@index([organizationId])
+  @@index([stage])
+  @@map("leads")
+}
+
+model LeadActivity {
+  id            String    @id @default(uuid())
+  leadId        String
+  type          String    // CALL, MEETING, VIEWING, MESSAGE, NOTE
+  summary       String
+  scheduledAt   DateTime?
+  completedAt   DateTime?
+  performedById String?
+  createdAt     DateTime  @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@map("lead_activities")
+}
+
+model PropertyViewing {
+  id            String    @id @default(uuid())
+  customerId    String
+  propertyId    String
+  scheduledTime DateTime
+  status        String    @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED
+  agentId       String?
+  feedback      String?
+  createdAt     DateTime  @default(now())
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([propertyId])
+  @@map("property_viewings")
+}
+
+// -----------------------------------------------------------------------------
+// 4. SALES, BOOKINGS & CONTRACTS
+// -----------------------------------------------------------------------------
+
+model Booking {
+  id                 String    @id @default(uuid())
+  bookingReference   String    @unique
+  customerId         String
+  propertyId         String
+  projectId          String
+  agentId            String?
+  bookingDate        DateTime  @default(now())
+  expiryDate         DateTime
+  sellingPrice       Decimal   @db.Decimal(14, 2)
+  discount           Decimal   @default(0) @db.Decimal(14, 2)
+  bookingFee         Decimal   @db.Decimal(14, 2)
+  depositRequired    Decimal   @db.Decimal(14, 2)
+  status             String    @default("APPROVED")
+  cancellationReason String?
+  approvedById       String?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  customer   Customer   @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  property   Property   @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  agent      User?      @relation("BookingAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  approvedBy User?      @relation("BookingApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  deposits   Deposit[]
+  contract   Contract?
+
+  @@index([customerId])
+  @@index([propertyId])
+  @@index([projectId])
+  @@index([status])
+  @@map("bookings")
+}
+
+model Deposit {
+  id                 String   @id @default(uuid())
+  bookingId          String
+  receiptNumber      String   @unique
+  amount             Decimal  @db.Decimal(14, 2)
+  currency           String   @default("USD")
+  paymentMethod      String   @default("BANK_TRANSFER")
+  referenceNumber    String?
+  paymentDate        DateTime @default(now())
+  verificationStatus String   @default("VERIFIED")
+  verifiedById       String?
+  notes              String?
+  createdAt          DateTime @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@map("deposits")
+}
+
+model Contract {
+  id                String    @id @default(uuid())
+  contractNumber    String    @unique
+  bookingId         String?   @unique
+  customerId        String
+  propertyId        String
+  projectId         String
+  sellingPrice      Decimal   @db.Decimal(14, 2)
+  depositPaid       Decimal   @default(0) @db.Decimal(14, 2)
+  balanceRemaining  Decimal   @db.Decimal(14, 2)
+  status            String    @default("ACTIVE")
+  signedDate        DateTime?
+  transferCondition String?
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  booking         Booking?                @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  customer        Customer                @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  property        Property                @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  project         Project                 @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  paymentPlans    PaymentPlan[]
+  installments    Installment[]
+  payments        Payment[]
+  commissions     CommissionCalculation[]
+
+  @@index([customerId])
+  @@index([propertyId])
+  @@index([projectId])
+  @@index([status])
+  @@map("contracts")
+}
+
+// -----------------------------------------------------------------------------
+// 5. PAYMENT PLANS, INSTALLMENTS, PAYMENTS & PENALTIES
+// -----------------------------------------------------------------------------
+
+model PaymentPlan {
+  id               String   @id @default(uuid())
+  contractId       String
+  planType         String   @default("EQUAL_MONTHLY")
+  totalPrincipal   Decimal  @db.Decimal(14, 2)
+  depositAmount    Decimal  @default(0) @db.Decimal(14, 2)
+  installmentCount Int
+  frequencyMonths  Int      @default(1)
+  firstDueDate     DateTime
+  finalDueDate     DateTime
+  gracePeriodDays  Int      @default(7)
+  penaltyDailyRate Decimal  @default(0.05) @db.Decimal(5, 3) // 0.05%
+  penaltyFixedFee  Decimal  @default(0) @db.Decimal(10, 2)
+  penaltyMaxCap    Decimal  @default(10.0) @db.Decimal(5, 2) // 10%
+  createdAt        DateTime @default(now())
+
+  contract     Contract      @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  installments Installment[]
+
+  @@index([contractId])
+  @@map("payment_plans")
+}
+
+model Installment {
+  id                String   @id @default(uuid())
+  paymentPlanId     String
+  contractId        String
+  installmentNumber Int
+  dueDate           DateTime
+  scheduledAmount   Decimal  @db.Decimal(14, 2)
+  amountPaid        Decimal  @default(0) @db.Decimal(14, 2)
+  outstandingAmount Decimal  @db.Decimal(14, 2)
+  latePenalty       Decimal  @default(0) @db.Decimal(14, 2)
+  waivedPenalty     Decimal  @default(0) @db.Decimal(14, 2)
+  status            String   @default("UPCOMING") // UPCOMING, DUE, PARTIALLY_PAID, PAID, OVERDUE, WAIVED
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  paymentPlan PaymentPlan         @relation(fields: [paymentPlanId], references: [id], onDelete: Cascade)
+  contract    Contract            @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  allocations PaymentAllocation[]
+
+  @@unique([paymentPlanId, installmentNumber])
+  @@index([contractId])
+  @@index([status])
+  @@index([dueDate])
+  @@map("installments")
+}
+
+model Payment {
+  id                 String    @id @default(uuid())
+  receiptNumber      String    @unique
+  contractId         String
+  customerId         String
+  amount             Decimal   @db.Decimal(14, 2)
+  currency           String    @default("USD")
+  paymentMethod      String    @default("BANK_TRANSFER")
+  transactionRef     String?
+  paymentDate        DateTime  @default(now())
+  receivedById       String?
+  verificationStatus String    @default("VERIFIED")
+  verifiedById       String?
+  verifiedAt         DateTime?
+  notes              String?
+  createdAt          DateTime  @default(now())
+
+  contract    Contract            @relation(fields: [contractId], references: [id], onDelete: Restrict)
+  customer    Customer            @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  receivedBy  User?               @relation("PaymentReceiver", fields: [receivedById], references: [id], onDelete: SetNull)
+  verifiedBy  User?               @relation("PaymentVerifier", fields: [verifiedById], references: [id], onDelete: SetNull)
+  allocations PaymentAllocation[]
+  refunds     Refund[]
+
+  @@index([contractId])
+  @@index([customerId])
+  @@map("payments")
+}
+
+model PaymentAllocation {
+  id              String   @id @default(uuid())
+  paymentId       String
+  installmentId   String
+  allocatedAmount Decimal  @db.Decimal(14, 2)
+  createdAt       DateTime @default(now())
+
+  payment     Payment     @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  installment Installment @relation(fields: [installmentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([installmentId])
+  @@map("payment_allocations")
+}
+
+model Refund {
+  id             String   @id @default(uuid())
+  paymentId      String
+  contractId     String
+  amount         Decimal  @db.Decimal(14, 2)
+  reason         String
+  authorizedById String?
+  refundDate     DateTime @default(now())
+  status         String   @default("COMPLETED")
+  createdAt      DateTime @default(now())
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@index([paymentId])
+  @@map("refunds")
+}
+
+// -----------------------------------------------------------------------------
+// 6. SALES AGENTS & COMMISSIONS
+// -----------------------------------------------------------------------------
+
+model SalesAgent {
+  id             String   @id @default(uuid())
+  organizationId String
+  userId         String?  @unique
+  code           String   @unique
+  fullName       String
+  phone          String
+  email          String?
+  team           String?  @default("DIRECT_SALES")
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User?                   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  commissions  CommissionCalculation[]
+
+  @@index([organizationId])
+  @@map("sales_agents")
+}
+
+model CommissionPolicy {
+  id                   String   @id @default(uuid())
+  organizationId       String
+  name                 String
+  ratePercent          Decimal  @db.Decimal(5, 2)
+  calculationBasis     String   @default("NET_SELLING_PRICE")
+  eligibilityMilestone String   @default("CONTRACT_SIGNING")
+  isTiered             Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  commissions  CommissionCalculation[]
+
+  @@index([organizationId])
+  @@map("commission_policies")
+}
+
+model CommissionCalculation {
+  id              String    @id @default(uuid())
+  contractId      String
+  agentId         String
+  policyId        String
+  basisAmount     Decimal   @db.Decimal(14, 2)
+  ratePercent     Decimal   @db.Decimal(5, 2)
+  calculatedAmount Decimal  @db.Decimal(14, 2)
+  approvedAmount  Decimal   @default(0) @db.Decimal(14, 2)
+  paidAmount      Decimal   @default(0) @db.Decimal(14, 2)
+  status          String    @default("APPROVED")
+  approvedById    String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  contract Contract           @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  agent    SalesAgent         @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  policy   CommissionPolicy   @relation(fields: [policyId], references: [id], onDelete: Restrict)
+  payouts  CommissionPayout[]
+
+  @@index([contractId])
+  @@index([agentId])
+  @@index([status])
+  @@map("commission_calculations")
+}
+
+model CommissionPayout {
+  id            String   @id @default(uuid())
+  commissionId  String
+  amount        Decimal  @db.Decimal(14, 2)
+  payoutDate    DateTime @default(now())
+  paymentMethod String   @default("BANK_TRANSFER")
+  reference     String?
+  paidById      String?
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  commission CommissionCalculation @relation(fields: [commissionId], references: [id], onDelete: Cascade)
+
+  @@index([commissionId])
+  @@map("commission_payouts")
+}
+
+// -----------------------------------------------------------------------------
+// 7. FINANCIAL MANAGEMENT, EXPENSES & BANK ACCOUNTS
+// -----------------------------------------------------------------------------
+
+model IncomeRecord {
+  id            String   @id @default(uuid())
+  projectId     String
+  categoryId    String?
+  amount        Decimal  @db.Decimal(14, 2)
+  currency      String   @default("USD")
+  receivedDate  DateTime @default(now())
+  description   String
+  receiptNumber String?
+  paymentMethod String   @default("BANK_TRANSFER")
+  createdAt     DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("income_records")
+}
+
+model Expense {
+  id            String    @id @default(uuid())
+  projectId     String
+  expenseNumber String    @unique
+  category      String    @default("CONSTRUCTION")
+  amount        Decimal   @db.Decimal(14, 2)
+  currency      String    @default("USD")
+  expenseDate   DateTime  @default(now())
+  paymentDate   DateTime?
+  paymentMethod String    @default("BANK_TRANSFER")
+  vendorName    String
+  description   String
+  invoiceUrl    String?
+  requestedById String?
+  status        String    @default("APPROVED")
+  approvedById  String?
+  approvedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  requestedBy User?   @relation("ExpenseRequester", fields: [requestedById], references: [id], onDelete: SetNull)
+  approvedBy  User?   @relation("ExpenseApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  @@index([projectId])
+  @@index([status])
+  @@map("expenses")
+}
+
+model FinancialAccount {
+  id             String   @id @default(uuid())
+  organizationId String
+  name           String
+  accountNumber  String
+  bankName       String
+  accountType    String   @default("BANK") // CASH, BANK
+  currency       String   @default("USD")
+  openingBalance Decimal  @default(0) @db.Decimal(14, 2)
+  currentBalance Decimal  @default(0) @db.Decimal(14, 2)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("financial_accounts")
+}
+
+// -----------------------------------------------------------------------------
+// 8. CHART OF ACCOUNTS & DOUBLE-ENTRY ACCOUNTING
+// -----------------------------------------------------------------------------
+
+model ChartOfAccount {
+  id             String   @id @default(uuid())
+  organizationId String
+  code           String   @unique
+  name           String
+  accountType    String   // ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+  parentId       String?
+  isSystem       Boolean  @default(false)
+  balance        Decimal  @default(0) @db.Decimal(14, 2)
+  description    String?
+  createdAt      DateTime @default(now())
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  entryLines   JournalEntryLine[]
+
+  @@index([organizationId])
+  @@map("chart_of_accounts")
+}
+
+model FiscalPeriod {
+  id             String    @id @default(uuid())
+  organizationId String
+  name           String
+  startDate      DateTime
+  endDate        DateTime
+  isClosed       Boolean   @default(false)
+  closedAt       DateTime?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("fiscal_periods")
+}
+
+model JournalEntry {
+  id             String    @id @default(uuid())
+  organizationId String
+  entryNumber    String    @unique
+  entryDate      DateTime  @default(now())
+  description    String
+  reference      String?
+  sourceEntity   String?
+  sourceId       String?
+  isPosted       Boolean   @default(true)
+  postedAt       DateTime? @default(now())
+  createdById    String?
+  createdAt      DateTime  @default(now())
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lines        JournalEntryLine[]
+
+  @@index([organizationId])
+  @@index([entryDate])
+  @@map("journal_entries")
+}
+
+model JournalEntryLine {
+  id             String   @id @default(uuid())
+  journalEntryId String
+  accountId      String
+  debit          Decimal  @default(0) @db.Decimal(14, 2)
+  credit         Decimal  @default(0) @db.Decimal(14, 2)
+  description    String?
+
+  journalEntry JournalEntry   @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  account      ChartOfAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+
+  @@index([journalEntryId])
+  @@index([accountId])
+  @@map("journal_entry_lines")
+}
+
+// -----------------------------------------------------------------------------
+// 9. PLATFORM SERVICES, NOTIFICATIONS & AUDIT
+// -----------------------------------------------------------------------------
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("INFO")
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id        String  @id @default(uuid())
+  userId    String  @unique
+  inApp     Boolean @default(true)
+  email     Boolean @default(true)
+  telegram  Boolean @default(true)
+  sms       Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+model DocumentMetadata {
+  id             String   @id @default(uuid())
+  organizationId String
+  entityType     String
+  entityId       String
+  fileName       String
+  fileKey        String
+  fileUrl        String
+  mimeType       String
+  fileSize       Int
+  isConfidential Boolean  @default(false)
+  uploadedById   String?
+  createdAt      DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@map("document_metadata")
+}
+
+model IdempotencyRecord {
+  id           String   @id @default(uuid())
+  key          String   @unique
+  path         String
+  responseCode Int
+  responseBody Json
+  createdAt    DateTime @default(now())
+
+  @@map("idempotency_records")
+}
+
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_settings")
+}
