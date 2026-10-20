@@ -1,0 +1,2 @@
+export type Project = { id: number; code: string; name: string; name_km?: string; type: string; location?: string; status: string; total_units: number; available_units: number; reporting_currency: 'USD' | 'KHR' }
+export type PropertyUnit = { id: number; project_id: number; unit_code: string; zone?: string; property_type: string; listing_price: string; currency: 'USD' | 'KHR'; status: string; project: { code: string; name: string } }
