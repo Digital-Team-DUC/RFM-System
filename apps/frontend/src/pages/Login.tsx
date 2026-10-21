@@ -28,9 +28,43 @@ export const Login: React.FC = () => {
     }
   };
 
-  const setDemoAccount = (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
+  const quickRoles = [
+    {
+      id: 'super-admin',
+      title: 'Super Admin',
+      subtitle: 'Full Access',
+      email: 'admin@rfm.com',
+      pass: 'Admin123!',
+    },
+    {
+      id: 'sales-manager',
+      title: 'Sales Manager',
+      subtitle: 'Bookings/CRM',
+      email: 'sales.manager@rfm.com',
+      pass: 'Sales123!',
+    },
+    {
+      id: 'accountant',
+      title: 'Sr. Accountant',
+      subtitle: 'General Ledger',
+      email: 'accountant@rfm.com',
+      pass: 'Account123!',
+    },
+    {
+      id: 'cashier',
+      title: 'Head Cashier',
+      subtitle: 'Payments/Receipts',
+      email: 'cashier@rfm.com',
+      pass: 'Cashier123!',
+    },
+  ];
+
+  const [selectedRoleId, setSelectedRoleId] = useState<string>('super-admin');
+
+  const selectRole = (role: (typeof quickRoles)[0]) => {
+    setSelectedRoleId(role.id);
+    setEmail(role.email);
+    setPassword(role.pass);
     setError(null);
   };
 
@@ -131,38 +165,31 @@ export const Login: React.FC = () => {
               Quick Test Roles
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <button
-                type="button"
-                onClick={() => setDemoAccount('admin@rfm.com', 'Admin123!')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-emerald-400 text-left transition"
-              >
-                <div className="font-semibold">Super Admin</div>
-                <div className="text-[10px] text-slate-500">Full Access</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setDemoAccount('sales.manager@rfm.com', 'Sales123!')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-emerald-400 text-left transition"
-              >
-                <div className="font-semibold">Sales Manager</div>
-                <div className="text-[10px] text-slate-500">Bookings/CRM</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setDemoAccount('accountant@rfm.com', 'Account123!')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-emerald-400 text-left transition"
-              >
-                <div className="font-semibold">Sr. Accountant</div>
-                <div className="text-[10px] text-slate-500">General Ledger</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setDemoAccount('cashier@rfm.com', 'Cashier123!')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-emerald-400 text-left transition"
-              >
-                <div className="font-semibold">Head Cashier</div>
-                <div className="text-[10px] text-slate-500">Payments/Receipts</div>
-              </button>
+              {quickRoles.map((role) => {
+                const isSelected = selectedRoleId === role.id || email === role.email;
+                return (
+                  <button
+                    key={role.id}
+                    type="button"
+                    onClick={() => selectRole(role)}
+                    className={`p-2.5 rounded-xl border text-left transition relative flex flex-col justify-between ${
+                      isSelected
+                        ? 'bg-emerald-500/15 border-emerald-500/60 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/40 text-white'
+                        : 'bg-slate-900/80 hover:bg-slate-800 border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-0.5">
+                      <div className={`font-semibold text-xs ${isSelected ? 'text-emerald-400 font-bold' : 'text-slate-200'}`}>
+                        {role.title}
+                      </div>
+                      {isSelected && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                      )}
+                    </div>
+                    <div className="text-[10px] text-slate-400">{role.subtitle}</div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

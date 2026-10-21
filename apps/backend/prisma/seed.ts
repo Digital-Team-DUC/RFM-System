@@ -87,7 +87,11 @@ async function main() {
       name: 'SALES_MANAGER',
       desc: 'Oversee CRM, sales agents, bookings, contracts, and approve discounts',
       perms: allPerms
-        .filter((p) => ['crm', 'sales', 'contracts', 'commissions'].includes(p.module) || p.code === 'properties.read')
+        .filter(
+          (p) =>
+            ['crm', 'sales', 'contracts', 'commissions'].includes(p.module) ||
+            ['properties.read', 'properties.update', 'payments.receive', 'reports.export'].includes(p.code)
+        )
         .map((p) => p.id),
     },
     {
@@ -101,14 +105,35 @@ async function main() {
       name: 'ACCOUNTANT',
       desc: 'Manage chart of accounts, journal entries, financial statements, and commission audits',
       perms: allPerms
-        .filter((p) => ['accounting', 'finance', 'reports'].includes(p.module) || ['payments.receive', 'payments.verify'].includes(p.code))
+        .filter(
+          (p) =>
+            ['accounting', 'finance', 'reports'].includes(p.module) ||
+            [
+              'payments.receive',
+              'payments.verify',
+              'contracts.manage',
+              'commissions.approve',
+              'crm.read',
+              'properties.read',
+            ].includes(p.code)
+        )
         .map((p) => p.id),
     },
     {
       name: 'CASHIER',
       desc: 'Receive customer payments, issue official receipts, and verify bank transaction slips',
       perms: allPerms
-        .filter((p) => ['payments.receive', 'payments.verify', 'properties.read', 'crm.read'].includes(p.code))
+        .filter((p) =>
+          [
+            'payments.receive',
+            'payments.verify',
+            'properties.read',
+            'crm.read',
+            'sales.create',
+            'bookings.approve',
+            'accounting.read',
+          ].includes(p.code)
+        )
         .map((p) => p.id),
     },
     {
@@ -148,8 +173,7 @@ async function main() {
   }
   console.log(`[Seed] Seeded ${rolesConfig.length} system roles with role permissions.`);
 
-  // 4. Initial Users
-  const passwordHash = await bcrypt.hash('Admin123!', 10);
+  // 4. Initial Users with Role-Matching Credentials
   const usersToCreate = [
     {
       email: 'admin@rfm.com',
@@ -157,6 +181,7 @@ async function main() {
       khmerName: 'រតនៈ សុភា',
       phone: '+855 12 888 777',
       role: 'SUPER_ADMIN',
+      password: 'Admin123!',
     },
     {
       email: 'sales.manager@rfm.com',
@@ -164,6 +189,7 @@ async function main() {
       khmerName: 'ហេង គីមឡុង',
       phone: '+855 17 555 444',
       role: 'SALES_MANAGER',
+      password: 'Sales123!',
     },
     {
       email: 'agent1@rfm.com',
@@ -171,6 +197,7 @@ async function main() {
       khmerName: 'ចាន់ សុខា',
       phone: '+855 70 333 222',
       role: 'SALES_AGENT',
+      password: 'Agent123!',
     },
     {
       email: 'accountant@rfm.com',
@@ -178,6 +205,7 @@ async function main() {
       khmerName: 'ពេជ្រ វណ្ណៈ',
       phone: '+855 92 111 000',
       role: 'ACCOUNTANT',
+      password: 'Account123!',
     },
     {
       email: 'cashier@rfm.com',
@@ -185,14 +213,22 @@ async function main() {
       khmerName: 'សំ ដារ៉ា',
       phone: '+855 89 222 111',
       role: 'CASHIER',
+      password: 'Cashier123!',
     },
   ];
 
   const userMap: Record<string, string> = {};
   for (const u of usersToCreate) {
+    const passwordHash = await bcrypt.hash(u.password, 10);
     const user = await prisma.user.upsert({
       where: { email: u.email },
-      update: { fullName: u.fullName, khmerName: u.khmerName, phone: u.phone },
+      update: {
+        fullName: u.fullName,
+        khmerName: u.khmerName,
+        phone: u.phone,
+        passwordHash,
+        isActive: true,
+      },
       create: {
         organizationId: org.id,
         email: u.email,
@@ -592,8 +628,10 @@ async function main() {
     },
   });
 
-  await prisma.deposit.create({
-    data: {
+  await prisma.deposit.upsert({
+    where: { receiptNumber: 'DEP-2026-001' },
+    update: {},
+    create: {
       bookingId: booking1.id,
       receiptNumber: 'DEP-2026-001',
       amount: 5000.0,
