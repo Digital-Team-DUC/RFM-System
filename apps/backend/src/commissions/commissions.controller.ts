@@ -19,12 +19,14 @@ export class CommissionsController {
   }
 
   @Get('policies')
+  @RequirePermissions('commissions.manage')
   @ApiOperation({ summary: 'List commission calculation policies' })
   async getPolicies(@Req() req: any) {
     return this.commissionsService.getPolicies(req.user.organizationId);
   }
 
   @Get('calculations')
+  @RequirePermissions('commissions.manage')
   @ApiOperation({ summary: 'List commission calculations and payout statuses' })
   async getCalculations(@Query() query: any) {
     return this.commissionsService.getCalculations(query);

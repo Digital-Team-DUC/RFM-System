@@ -13,6 +13,7 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Get()
+  @RequirePermissions('payments.receive')
   @ApiOperation({ summary: 'List customer payments and receipts' })
   async findAll(@Query() query: any) {
     return this.paymentsService.findAllPayments(query);
@@ -39,6 +40,7 @@ export class PaymentsController {
   }
 
   @Get('contract/:contractId/installments')
+  @RequirePermissions('payments.receive')
   @ApiOperation({ summary: 'Get installment schedule with real-time penalty calculations' })
   async getContractInstallments(@Param('contractId') contractId: string) {
     return this.paymentsService.getContractInstallments(contractId);

@@ -13,12 +13,14 @@ export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
   @Get()
+  @RequirePermissions('sales.create')
   @ApiOperation({ summary: 'List customer bookings and reservations' })
   async findAll(@Query() query: any) {
     return this.bookingsService.findAll(query);
   }
 
   @Get(':id')
+  @RequirePermissions('sales.create')
   @ApiOperation({ summary: 'Get booking detail by ID' })
   async findOne(@Param('id') id: string) {
     return this.bookingsService.findOne(id);

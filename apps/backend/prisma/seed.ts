@@ -87,10 +87,20 @@ async function main() {
       name: 'SALES_MANAGER',
       desc: 'Oversee CRM, sales agents, bookings, contracts, and approve discounts',
       perms: allPerms
-        .filter(
-          (p) =>
-            ['crm', 'sales', 'contracts', 'commissions'].includes(p.module) ||
-            ['properties.read', 'properties.update', 'payments.receive', 'reports.export'].includes(p.code)
+        .filter((p) =>
+          [
+            'properties.read',
+            'properties.update',
+            'crm.read',
+            'crm.manage',
+            'sales.create',
+            'bookings.approve',
+            'bookings.cancel',
+            'contracts.manage',
+            'contracts.approve',
+            'commissions.manage',
+            'commissions.approve',
+          ].includes(p.code)
         )
         .map((p) => p.id),
     },
@@ -105,17 +115,18 @@ async function main() {
       name: 'ACCOUNTANT',
       desc: 'Manage chart of accounts, journal entries, financial statements, and commission audits',
       perms: allPerms
-        .filter(
-          (p) =>
-            ['accounting', 'finance', 'reports'].includes(p.module) ||
-            [
-              'payments.receive',
-              'payments.verify',
-              'contracts.manage',
-              'commissions.approve',
-              'crm.read',
-              'properties.read',
-            ].includes(p.code)
+        .filter((p) =>
+          [
+            'accounting.read',
+            'accounting.post',
+            'accounting.close',
+            'expenses.create',
+            'expenses.approve',
+            'payments.receive',
+            'payments.verify',
+            'commissions.approve',
+            'reports.export',
+          ].includes(p.code)
         )
         .map((p) => p.id),
     },
@@ -123,17 +134,7 @@ async function main() {
       name: 'CASHIER',
       desc: 'Receive customer payments, issue official receipts, and verify bank transaction slips',
       perms: allPerms
-        .filter((p) =>
-          [
-            'payments.receive',
-            'payments.verify',
-            'properties.read',
-            'crm.read',
-            'sales.create',
-            'bookings.approve',
-            'accounting.read',
-          ].includes(p.code)
-        )
+        .filter((p) => ['payments.receive', 'payments.verify'].includes(p.code))
         .map((p) => p.id),
     },
     {
@@ -170,6 +171,14 @@ async function main() {
         create: { roleId: role.id, permissionId: permId },
       });
     }
+
+    // Delete permissions no longer assigned to this role
+    await prisma.rolePermission.deleteMany({
+      where: {
+        roleId: role.id,
+        permissionId: { notIn: r.perms },
+      },
+    });
   }
   console.log(`[Seed] Seeded ${rolesConfig.length} system roles with role permissions.`);
 

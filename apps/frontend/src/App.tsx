@@ -26,6 +26,8 @@ import { UsersManagement } from './pages/UsersManagement';
 import { AuditLogs } from './pages/AuditLogs';
 import { SystemSettings } from './pages/SystemSettings';
 
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
@@ -35,24 +37,150 @@ export const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
-              <Route path="projects" element={<Projects />} />
-              <Route path="master-plan" element={<MasterPlan />} />
-              <Route path="properties" element={<Properties />} />
-              <Route path="crm/leads" element={<CrmLeads />} />
-              <Route path="crm/customers" element={<Customers />} />
-              <Route path="crm/customers/:id" element={<CustomerDetail />} />
-              <Route path="sales/bookings" element={<Bookings />} />
-              <Route path="sales/contracts" element={<Contracts />} />
-              <Route path="payments" element={<Payments />} />
-              <Route path="commissions" element={<Commissions />} />
-              <Route path="finance/expenses" element={<Expenses />} />
-              <Route path="finance/accounts" element={<BankAccounts />} />
-              <Route path="accounting/coa" element={<ChartOfAccounts />} />
-              <Route path="accounting/journal" element={<JournalEntries />} />
-              <Route path="accounting/statements" element={<FinancialStatements />} />
-              <Route path="admin/users" element={<UsersManagement />} />
-              <Route path="admin/audit" element={<AuditLogs />} />
-              <Route path="admin/settings" element={<SystemSettings />} />
+              <Route
+                path="projects"
+                element={
+                  <ProtectedRoute permission="properties.read">
+                    <Projects />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="master-plan"
+                element={
+                  <ProtectedRoute permission="properties.read">
+                    <MasterPlan />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="properties"
+                element={
+                  <ProtectedRoute permission="properties.read">
+                    <Properties />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="crm/leads"
+                element={
+                  <ProtectedRoute permission="crm.read">
+                    <CrmLeads />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="crm/customers"
+                element={
+                  <ProtectedRoute permission="crm.read">
+                    <Customers />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="crm/customers/:id"
+                element={
+                  <ProtectedRoute permission="crm.read">
+                    <CustomerDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="sales/bookings"
+                element={
+                  <ProtectedRoute permission={['sales.create', 'bookings.approve']}>
+                    <Bookings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="sales/contracts"
+                element={
+                  <ProtectedRoute permission={['contracts.manage', 'contracts.approve']}>
+                    <Contracts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="payments"
+                element={
+                  <ProtectedRoute permission={['payments.receive', 'payments.verify']}>
+                    <Payments />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="commissions"
+                element={
+                  <ProtectedRoute permission={['commissions.manage', 'commissions.approve']}>
+                    <Commissions />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="finance/expenses"
+                element={
+                  <ProtectedRoute permission={['expenses.create', 'expenses.approve']}>
+                    <Expenses />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="finance/accounts"
+                element={
+                  <ProtectedRoute permission="accounting.read">
+                    <BankAccounts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="accounting/coa"
+                element={
+                  <ProtectedRoute permission="accounting.read">
+                    <ChartOfAccounts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="accounting/journal"
+                element={
+                  <ProtectedRoute permission="accounting.read">
+                    <JournalEntries />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="accounting/statements"
+                element={
+                  <ProtectedRoute permission="accounting.read">
+                    <FinancialStatements />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/users"
+                element={
+                  <ProtectedRoute permission="users.manage">
+                    <UsersManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/audit"
+                element={
+                  <ProtectedRoute permission="audit.read">
+                    <AuditLogs />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/settings"
+                element={
+                  <ProtectedRoute permission="settings.manage">
+                    <SystemSettings />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

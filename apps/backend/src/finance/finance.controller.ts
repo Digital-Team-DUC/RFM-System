@@ -13,6 +13,7 @@ export class FinanceController {
   constructor(private readonly financeService: FinanceService) {}
 
   @Get('expenses')
+  @RequirePermissions('expenses.create')
   @ApiOperation({ summary: 'List operating expenses' })
   async getExpenses(@Query() query: any) {
     return this.financeService.getExpenses(query);
@@ -47,6 +48,7 @@ export class FinanceController {
   }
 
   @Get('accounts')
+  @RequirePermissions('accounting.read')
   @ApiOperation({ summary: 'List bank and cash accounts' })
   async getAccounts(@Req() req: any) {
     return this.financeService.getAccounts(req.user.organizationId);

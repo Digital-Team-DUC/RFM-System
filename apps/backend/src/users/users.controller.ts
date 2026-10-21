@@ -20,6 +20,7 @@ export class UsersController {
   }
 
   @Get('roles')
+  @RequirePermissions('users.manage')
   @ApiOperation({ summary: 'List roles and permission matrices' })
   async getRoles(@Req() req: any) {
     return this.usersService.getRoles(req.user.organizationId);

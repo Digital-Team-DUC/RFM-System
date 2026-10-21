@@ -25,7 +25,8 @@ interface AuthContextType {
   setSelectedProjectId: (id: string) => void;
   login: (email: string, pass: string) => Promise<void>;
   logout: () => void;
-  hasPermission: (permission: string) => boolean;
+  hasPermission: (permission: string | string[]) => boolean;
+  hasRole: (role: string | string[]) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -75,10 +76,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.location.href = '/login';
   };
 
-  const hasPermission = (permission: string): boolean => {
+  const hasPermission = (permission: string | string[]): boolean => {
     if (!user) return false;
     if (user.roles?.includes('SUPER_ADMIN')) return true;
+    if (Array.isArray(permission)) {
+      return permission.some((p) => user.permissions?.includes(p));
+    }
     return user.permissions?.includes(permission) ?? false;
+  };
+
+  const hasRole = (role: string | string[]): boolean => {
+    if (!user) return false;
+    if (user.roles?.includes('SUPER_ADMIN')) return true;
+    if (Array.isArray(role)) {
+      return role.some((r) => user.roles?.includes(r));
+    }
+    return user.roles?.includes(role) ?? false;
   };
 
   return (
@@ -92,6 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         hasPermission,
+        hasRole,
       }}
     >
       {children}

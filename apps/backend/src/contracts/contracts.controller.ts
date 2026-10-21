@@ -13,12 +13,14 @@ export class ContractsController {
   constructor(private readonly contractsService: ContractsService) {}
 
   @Get()
+  @RequirePermissions('contracts.manage')
   @ApiOperation({ summary: 'List customer sales contracts' })
   async findAll(@Query() query: any) {
     return this.contractsService.findAll(query);
   }
 
   @Get(':id')
+  @RequirePermissions('contracts.manage')
   @ApiOperation({ summary: 'Get full contract detail with payment plans and installment rows' })
   async findOne(@Param('id') id: string) {
     return this.contractsService.findOne(id);

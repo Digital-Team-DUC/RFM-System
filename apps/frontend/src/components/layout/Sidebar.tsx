@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard,
   Building,
@@ -22,49 +23,69 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+interface NavItem {
+  to: string;
+  label: string;
+  icon: any;
+  permission?: string | string[];
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
 export const Sidebar: React.FC = () => {
   const { t } = useTranslation();
+  const { hasPermission } = useAuth();
 
-  const navSections = [
+  const navSections: NavSection[] = [
     {
       title: 'Portfolio & Inventory',
       items: [
         { to: '/', label: t('nav.dashboard'), icon: LayoutDashboard },
-        { to: '/projects', label: t('nav.projects'), icon: Building },
-        { to: '/master-plan', label: t('nav.masterPlan'), icon: Map },
-        { to: '/properties', label: t('nav.properties'), icon: Home },
+        { to: '/projects', label: t('nav.projects'), icon: Building, permission: 'properties.read' },
+        { to: '/master-plan', label: t('nav.masterPlan'), icon: Map, permission: 'properties.read' },
+        { to: '/properties', label: t('nav.properties'), icon: Home, permission: 'properties.read' },
       ],
     },
     {
       title: 'CRM & Sales',
       items: [
-        { to: '/crm/leads', label: t('nav.crm'), icon: UserCheck },
-        { to: '/crm/customers', label: t('nav.customers'), icon: Users },
-        { to: '/sales/bookings', label: t('nav.bookings'), icon: BookmarkCheck },
-        { to: '/sales/contracts', label: t('nav.contracts'), icon: FileText },
-        { to: '/payments', label: t('nav.payments'), icon: CreditCard },
-        { to: '/commissions', label: t('nav.commissions'), icon: Award },
+        { to: '/crm/leads', label: t('nav.crm'), icon: UserCheck, permission: 'crm.read' },
+        { to: '/crm/customers', label: t('nav.customers'), icon: Users, permission: 'crm.read' },
+        { to: '/sales/bookings', label: t('nav.bookings'), icon: BookmarkCheck, permission: 'sales.create' },
+        { to: '/sales/contracts', label: t('nav.contracts'), icon: FileText, permission: 'contracts.manage' },
+        { to: '/payments', label: t('nav.payments'), icon: CreditCard, permission: 'payments.receive' },
+        { to: '/commissions', label: t('nav.commissions'), icon: Award, permission: 'commissions.manage' },
       ],
     },
     {
       title: 'Finance & Accounting',
       items: [
-        { to: '/finance/expenses', label: t('nav.expenses'), icon: Receipt },
-        { to: '/finance/accounts', label: t('nav.bankAccounts'), icon: Wallet },
-        { to: '/accounting/coa', label: t('nav.chartOfAccounts'), icon: BookOpen },
-        { to: '/accounting/journal', label: t('nav.journalEntries'), icon: Split },
-        { to: '/accounting/statements', label: t('nav.financialStatements'), icon: BarChart3 },
+        { to: '/finance/expenses', label: t('nav.expenses'), icon: Receipt, permission: 'expenses.create' },
+        { to: '/finance/accounts', label: t('nav.bankAccounts'), icon: Wallet, permission: 'accounting.read' },
+        { to: '/accounting/coa', label: t('nav.chartOfAccounts'), icon: BookOpen, permission: 'accounting.read' },
+        { to: '/accounting/journal', label: t('nav.journalEntries'), icon: Split, permission: 'accounting.read' },
+        { to: '/accounting/statements', label: t('nav.financialStatements'), icon: BarChart3, permission: 'accounting.read' },
       ],
     },
     {
       title: 'System & Admin',
       items: [
-        { to: '/admin/users', label: t('nav.users'), icon: Users },
-        { to: '/admin/audit', label: t('nav.auditLogs'), icon: ShieldAlert },
-        { to: '/admin/settings', label: t('nav.settings'), icon: Settings },
+        { to: '/admin/users', label: t('nav.users'), icon: Users, permission: 'users.manage' },
+        { to: '/admin/audit', label: t('nav.auditLogs'), icon: ShieldAlert, permission: 'audit.read' },
+        { to: '/admin/settings', label: t('nav.settings'), icon: Settings, permission: 'settings.manage' },
       ],
     },
   ];
+
+  const visibleSections = navSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => !item.permission || hasPermission(item.permission)),
+    }))
+    .filter((section) => section.items.length > 0);
 
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-950 flex flex-col shrink-0 h-screen sticky top-0 overflow-y-auto">
@@ -85,7 +106,7 @@ export const Sidebar: React.FC = () => {
 
       {/* Navigation Sections */}
       <div className="flex-1 px-3 py-4 space-y-6">
-        {navSections.map((section, idx) => (
+        {visibleSections.map((section, idx) => (
           <div key={idx}>
             <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">
               {section.title}
