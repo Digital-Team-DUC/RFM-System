@@ -7,20 +7,26 @@ async function main() {
   console.log('--- SEEDING ADMIN & ROLES (PURE JS) ---');
 
   // 1. Organization
-  let org = await prisma.organization.findFirst();
-  if (!org) {
-    org = await prisma.organization.create({
-      data: {
-        name: 'RFM Enterprise Co., Ltd.',
-        currency: 'USD',
-        country: 'Cambodia',
-        timezone: 'Asia/Phnom_Penh',
+  const org = await prisma.organization.upsert({
+    where: { code: 'PPLAD' },
+    update: {},
+    create: {
+      name: 'Phnom Penh Land & Asset Development Co., Ltd.',
+      code: 'PPLAD',
+      taxNumber: 'K009-876543210',
+      address: 'Preah Monivong Blvd, Phnom Penh, Cambodia',
+      phone: '+855 23 999 888',
+      email: 'info@pplad-realestate.com',
+      currency: 'USD',
+      settings: {
+        defaultTimezone: 'Asia/Phnom_Penh',
+        secondaryCurrency: 'KHR',
+        khrExchangeRate: 4100,
+        fiscalYearStart: '01-01',
       },
-    });
-    console.log('[Seed] Created default organization:', org.name);
-  } else {
-    console.log('[Seed] Using existing organization:', org.name);
-  }
+    },
+  });
+  console.log(`[Seed] Organization ready: ${org.name} (${org.id})`);
 
   // 2. Permissions
   const permissionsList = [
@@ -176,4 +182,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
