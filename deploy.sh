@@ -49,12 +49,15 @@ sudo docker compose up -d --build
 echo "⏳ Waiting for services to become healthy..."
 sleep 15
 
-# 6. Run database migrations & seed
-echo "🔄 Running Prisma Database Migrations..."
-sudo docker compose exec -T backend npx prisma migrate deploy || true
+# 6. Push database schema & seed initial users
+echo "🔄 Pushing Prisma Database Schema to PostgreSQL..."
+sudo docker compose exec -T backend npx prisma db push --accept-data-loss
 
-echo "🌱 Seeding Initial Database Admin & Roles..."
-sudo docker compose exec -T backend npx prisma db seed || true
+echo "🌱 Seeding Initial Database Admin, Roles & Permissions..."
+sudo docker compose exec -T backend npx prisma db seed || sudo docker compose exec -T backend npx ts-node prisma/seed.ts || true
+
+echo "🧹 Ensuring Clean Financial Balances ($0.00)..."
+sudo docker compose exec -T backend node scripts/clear-demo-data.cjs || true
 
 # 7. Check container status
 echo ""
