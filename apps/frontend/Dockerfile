@@ -12,6 +12,9 @@ RUN npm install
 COPY packages/shared ./packages/shared
 COPY apps/frontend ./apps/frontend
 
+# Build shared package so frontend TypeScript compiler can find types
+RUN npm run build --workspace=@rfm/shared
+
 WORKDIR /app/apps/frontend
 RUN npm run build
 
