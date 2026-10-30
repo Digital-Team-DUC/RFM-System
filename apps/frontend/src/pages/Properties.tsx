@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getPropertyTypes, PropertyTypeOption } from '../services/propertyTypes';
+import { ManagePropertyTypesModal } from '../components/properties/ManagePropertyTypesModal';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { formatCurrency, Currency } from '@rfm/shared';
@@ -33,6 +35,16 @@ export const Properties: React.FC = () => {
   const [filterProject, setFilterProject] = useState(selectedProjectId || '');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterType, setFilterType] = useState('');
+  const [propertyTypes, setPropertyTypes] = useState<PropertyTypeOption[]>(getPropertyTypes());
+  const [showTypeManager, setShowTypeManager] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onTypesChanged = (e: any) => {
+      setPropertyTypes(e.detail || getPropertyTypes());
+    };
+    window.addEventListener('rfm_property_types_changed', onTypesChanged);
+    return () => window.removeEventListener('rfm_property_types_changed', onTypesChanged);
+  }, []);
 
   // Modals
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
@@ -143,6 +155,16 @@ export const Properties: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setShowTypeManager(true)}
+            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-xs flex items-center space-x-1.5 border border-slate-700 shadow transition cursor-pointer"
+            title="Manage custom property types"
+          >
+            <Tag className="w-3.5 h-3.5 text-emerald-400" />
+            <span>{i18n.language === 'km' ? 'គ្រប់គ្រងប្រភេទអចលនទ្រព្យ' : 'Property Types'}</span>
+          </button>
+
           {hasPermission('properties.create') && (
             <button
               onClick={() => setShowCreateModal(true)}
@@ -224,12 +246,11 @@ export const Properties: React.FC = () => {
           className="bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
         >
           <option value="">{t('properties.filters.allTypes')}</option>
-          <option value="LAND_PLOT">Land Plot</option>
-          <option value="VILLA_SINGLE">Single Villa</option>
-          <option value="VILLA_TWIN">Twin Villa</option>
-          <option value="SHOPHOUSE">Shophouse</option>
-          <option value="TOWNHOUSE">Townhouse</option>
-          <option value="CONDO_STUDIO">Studio Condo</option>
+          {propertyTypes.map((pt) => (
+            <option key={pt.value} value={pt.value}>
+              {i18n.language === 'km' ? pt.labelKm : pt.labelEn}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -577,18 +598,27 @@ export const Properties: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Property Type</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-slate-300 font-medium">Property Type</label>
+                  <button
+                    type="button"
+                    onClick={() => setShowTypeManager(true)}
+                    className="text-[11px] text-emerald-400 hover:text-emerald-300 flex items-center space-x-1 font-semibold"
+                  >
+                    <Plus className="w-3 h-3" />
+                    <span>{i18n.language === 'km' ? '+ បន្ថែម / លុបប្រភេទ' : '+ Manage Types'}</span>
+                  </button>
+                </div>
                 <select
                   value={formData.propertyType}
                   onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
                   className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200"
                 >
-                  <option value="LAND_PLOT">Land Plot</option>
-                  <option value="VILLA_SINGLE">Single Villa</option>
-                  <option value="VILLA_TWIN">Twin Villa</option>
-                  <option value="SHOPHOUSE">Shophouse</option>
-                  <option value="TOWNHOUSE">Townhouse</option>
-                  <option value="CONDO_STUDIO">Studio Condo</option>
+                  {propertyTypes.map((pt) => (
+                    <option key={pt.value} value={pt.value}>
+                      {i18n.language === 'km' ? pt.labelKm : pt.labelEn}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -673,6 +703,14 @@ export const Properties: React.FC = () => {
             </div>
           </form>
         </div>
+      )}
+
+      {/* Manage Property Types Modal */}
+      {showTypeManager && (
+        <ManagePropertyTypesModal
+          onClose={() => setShowTypeManager(false)}
+          onTypesUpdated={(updated) => setPropertyTypes(updated)}
+        />
       )}
     </div>
   );

@@ -12,8 +12,11 @@ async function bootstrap() {
   app.setGlobalPrefix(apiPrefix.replace(/^\//, ''));
 
   // CORS Configuration
-  const allowedOrigins = process.env.CORS_ORIGIN
-    ? process.env.CORS_ORIGIN.split(',')
+  const corsOriginEnv = process.env.CORS_ORIGIN;
+  const allowedOrigins = corsOriginEnv
+    ? corsOriginEnv === '*'
+      ? true
+      : corsOriginEnv.split(',')
     : ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
   app.enableCors({

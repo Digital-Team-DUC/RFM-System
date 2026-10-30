@@ -36,6 +36,7 @@ async function clearDemoData() {
       prisma.projectMembership.deleteMany({}),
       prisma.project.deleteMany({}),
       prisma.financialAccount.deleteMany({}),
+      prisma.chartOfAccount.updateMany({ data: { balance: 0.0 } }),
       prisma.notification.deleteMany({}),
       prisma.auditLog.deleteMany({})
     ]);

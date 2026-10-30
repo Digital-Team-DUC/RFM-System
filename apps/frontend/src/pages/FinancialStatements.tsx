@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 export const FinancialStatements: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<'pnl' | 'balanceSheet' | 'trialBalance' | 'arAging'>('pnl');
 
   const [pnl, setPnl] = useState<any>(null);
@@ -51,7 +51,7 @@ export const FinancialStatements: React.FC = () => {
         <div>
           <h1 className="text-xl font-black text-white flex items-center space-x-2">
             <BarChart3 className="w-5 h-5 text-emerald-400" />
-            <span>{t('statements.title', t('nav.financialStatements'))}</span>
+            <span>{t('statements.title', i18n.language === 'km' ? 'របាយការណ៍ហិរញ្ញវត្ថុ' : 'Financial Statements')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             {t('statements.subtitle')}

@@ -94,8 +94,10 @@ export const Login: React.FC = () => {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 items-center justify-center text-slate-950 font-black shadow-xl shadow-emerald-500/20 mb-4">
-            <Sparkles className="w-6 h-6" />
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="w-20 h-20 rounded-2xl bg-white p-2 shadow-2xl shadow-emerald-500/20 border border-slate-700/60 overflow-hidden flex items-center justify-center">
+              <img src="/rfm-logo.png" alt="RFM System" className="w-full h-full object-contain" />
+            </div>
           </div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">
             {t('appName')}

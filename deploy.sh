@@ -1,0 +1,63 @@
+#!/bin/bash
+set -e
+
+echo "=========================================================="
+echo "🚀 RFM Enterprise ERP — Automated AWS Ubuntu Deployment"
+echo "=========================================================="
+
+# 1. Update system packages
+sudo apt-get update -y
+
+# 2. Install Docker & Docker Compose if not installed
+if ! command -v docker &> /dev/null; then
+    echo "📦 Installing Docker & Docker Compose..."
+    sudo apt-get install -y ca-certificates curl gnupg lsb-release git
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update -y
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo usermod -aG docker $USER || true
+fi
+
+# Ensure docker service is running
+sudo systemctl enable docker || true
+sudo systemctl start docker || true
+
+# 3. Create .env file if it does not exist
+if [ ! -f .env ]; then
+    echo "⚙️ Creating .env configuration from .env.example..."
+    cp .env.example .env
+fi
+
+# 4. Build and start containers
+echo "🏗️ Building and starting all Docker containers..."
+sudo docker compose down --remove-orphans || true
+sudo docker compose up -d --build
+
+# 5. Wait for database and backend
+echo "⏳ Waiting for services to become healthy..."
+sleep 15
+
+# 6. Run database migrations & seed
+echo "🔄 Running Prisma Database Migrations..."
+sudo docker compose exec -T backend npx prisma migrate deploy || true
+
+echo "🌱 Seeding Initial Database Admin & Roles..."
+sudo docker compose exec -T backend npx prisma db seed || true
+
+# 7. Check container status
+echo ""
+echo "📊 Containers Status:"
+sudo docker compose ps
+
+echo "=========================================================="
+echo "🎉 DEPLOYMENT COMPLETE!"
+echo "🌐 Your customer can now access the system at:"
+echo "   http://13.229.148.123"
+echo ""
+echo "Default Login Credentials:"
+echo "Email:    admin@rfm.com"
+echo "Password: Admin123!"
+echo "=========================================================="
+

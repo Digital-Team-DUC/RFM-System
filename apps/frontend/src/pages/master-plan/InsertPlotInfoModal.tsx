@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../../services/api';
 import { MasterPlanShapeData } from './types';
+import { getPropertyTypes, PropertyTypeOption } from '../../services/propertyTypes';
+import { ManagePropertyTypesModal } from '../../components/properties/ManagePropertyTypesModal';
 import {
   X,
   Save,
@@ -28,7 +30,7 @@ export const InsertPlotInfoModal: React.FC<InsertPlotInfoModalProps> = ({
   onClose,
   onUpdated,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const prop = shape.property;
 
   // Basic Shape Info
@@ -39,6 +41,8 @@ export const InsertPlotInfoModal: React.FC<InsertPlotInfoModalProps> = ({
 
   // Property / Plot Info
   const [title, setTitle] = useState<string>(prop?.title || (shape.label ? `Unit ${shape.label}` : ''));
+  const [propertyTypes, setPropertyTypes] = useState<PropertyTypeOption[]>(getPropertyTypes());
+  const [showTypeManager, setShowTypeManager] = useState<boolean>(false);
   const [propertyType, setPropertyType] = useState<string>(prop?.propertyType || 'VILLA');
   const [sellingPrice, setSellingPrice] = useState<number>(prop?.sellingPrice ? Number(prop.sellingPrice) : 150000);
   const [landArea, setLandArea] = useState<number>(prop?.landArea ? Number(prop.landArea) : 160);
@@ -261,18 +265,26 @@ export const InsertPlotInfoModal: React.FC<InsertPlotInfoModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-slate-400 block mb-1">{t('masterPlan.propertyType')}</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-400 block">{t('masterPlan.propertyType')}</label>
+                    <button
+                      type="button"
+                      onClick={() => setShowTypeManager(true)}
+                      className="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                    >
+                      {i18n.language === 'km' ? '+ បន្ថែម/លុបប្រភេទ' : '+ Manage Types'}
+                    </button>
+                  </div>
                   <select
                     value={propertyType}
                     onChange={(e) => setPropertyType(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500 text-xs"
                   >
-                    <option value="VILLA">{t('masterPlan.propertyTypes.villa')}</option>
-                    <option value="SHOPHOUSE">{t('masterPlan.propertyTypes.shophouse')}</option>
-                    <option value="TOWNHOUSE">{t('masterPlan.propertyTypes.townhouse')}</option>
-                    <option value="CONDO">{t('masterPlan.propertyTypes.condo')}</option>
-                    <option value="LAND_PLOT">{t('masterPlan.propertyTypes.landPlot')}</option>
-                    <option value="COMMERCIAL">{t('masterPlan.propertyTypes.commercial')}</option>
+                    {propertyTypes.map((pt) => (
+                      <option key={pt.value} value={pt.value}>
+                        {i18n.language === 'km' ? pt.labelKm : pt.labelEn}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -422,6 +434,13 @@ export const InsertPlotInfoModal: React.FC<InsertPlotInfoModalProps> = ({
           </div>
         </form>
       </div>
+      {/* Property Types Management Modal */}
+      {showTypeManager && (
+        <ManagePropertyTypesModal
+          onClose={() => setShowTypeManager(false)}
+          onTypesUpdated={(updated) => setPropertyTypes(updated)}
+        />
+      )}
     </div>
   );
 };

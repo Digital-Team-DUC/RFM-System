@@ -5,7 +5,7 @@ import { formatCurrency, Currency } from '@rfm/shared';
 import { BookOpen, Plus, Search, Layers, X } from 'lucide-react';
 
 export const ChartOfAccounts: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [accounts, setAccounts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState('ALL');
@@ -49,6 +49,15 @@ export const ChartOfAccounts: React.FC = () => {
     return a.accountType === filterType;
   });
 
+  const filterOptions = [
+    { key: 'ALL', label: i18n.language === 'km' ? 'ទាំងអស់' : 'ALL' },
+    { key: 'ASSET', label: i18n.language === 'km' ? 'ទ្រព្យសកម្ម (Asset)' : 'ASSET' },
+    { key: 'LIABILITY', label: i18n.language === 'km' ? 'បំណុល (Liability)' : 'LIABILITY' },
+    { key: 'EQUITY', label: i18n.language === 'km' ? 'មូលធន (Equity)' : 'EQUITY' },
+    { key: 'REVENUE', label: i18n.language === 'km' ? 'ចំណូល (Revenue)' : 'REVENUE' },
+    { key: 'EXPENSE', label: i18n.language === 'km' ? 'ចំណាយ (Expense)' : 'EXPENSE' },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -58,7 +67,9 @@ export const ChartOfAccounts: React.FC = () => {
             <span>{t('nav.chartOfAccounts')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            General ledger chart of accounts foundation supporting double-entry real estate financial accounting
+            {i18n.language === 'km'
+              ? 'តារាងគណនីសៀវភៅធំសម្រាប់ទ្រទ្រង់ប្រព័ន្ធគណនេយ្យទ្វេភាគនៃអាជីវកម្មអចលនទ្រព្យ'
+              : 'General ledger chart of accounts foundation supporting double-entry real estate financial accounting'}
           </p>
         </div>
 
@@ -67,23 +78,23 @@ export const ChartOfAccounts: React.FC = () => {
           className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center space-x-1.5 shadow-lg shadow-emerald-500/20 transition"
         >
           <Plus className="w-4 h-4" />
-          <span>New Account</span>
+          <span>{i18n.language === 'km' ? 'បង្កើតគណនីថ្មី' : 'New Account'}</span>
         </button>
       </div>
 
       {/* Account Type Filters */}
       <div className="flex gap-2 overflow-x-auto pb-2 text-xs">
-        {['ALL', 'ASSET', 'LIABILITY', 'EQUITY', 'REVENUE', 'EXPENSE'].map((type) => (
+        {filterOptions.map((opt) => (
           <button
-            key={type}
-            onClick={() => setFilterType(type)}
-            className={`px-3 py-1.5 rounded-xl font-semibold transition ${
-              filterType === type
+            key={opt.key}
+            onClick={() => setFilterType(opt.key)}
+            className={`px-3.5 py-1.5 rounded-xl font-semibold transition ${
+              filterType === opt.key
                 ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
                 : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
             }`}
           >
-            {type}
+            {opt.label}
           </button>
         ))}
       </div>
@@ -98,10 +109,10 @@ export const ChartOfAccounts: React.FC = () => {
             <table className="w-full text-left text-xs text-slate-300">
               <thead className="bg-slate-900/90 text-slate-400 uppercase font-semibold border-b border-slate-800">
                 <tr>
-                  <th className="py-3.5 px-4">Account Code</th>
-                  <th className="py-3.5 px-4">Account Name</th>
-                  <th className="py-3.5 px-4">Type</th>
-                  <th className="py-3.5 px-4 text-right">Current Ledger Balance</th>
+                  <th className="py-3.5 px-4">{i18n.language === 'km' ? 'លេខកូដគណនី' : 'Account Code'}</th>
+                  <th className="py-3.5 px-4">{i18n.language === 'km' ? 'ឈ្មោះគណនី' : 'Account Name'}</th>
+                  <th className="py-3.5 px-4">{i18n.language === 'km' ? 'ប្រភេទ' : 'Type'}</th>
+                  <th className="py-3.5 px-4 text-right">{i18n.language === 'km' ? 'សមតុល្យសៀវភៅធំ' : 'Current Ledger Balance'}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-medium">
@@ -117,7 +128,7 @@ export const ChartOfAccounts: React.FC = () => {
                         {acc.accountType}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right font-black text-white">
+                    <td className="py-3 px-4 text-right font-black text-white font-mono">
                       {formatCurrency(acc.balance, Currency.USD)}
                     </td>
                   </tr>
@@ -135,11 +146,15 @@ export const ChartOfAccounts: React.FC = () => {
             onSubmit={handleCreate}
             className="w-full max-w-md bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl"
           >
-            <h3 className="text-base font-bold text-white mb-4">Add General Ledger Account</h3>
+            <h3 className="text-base font-bold text-white mb-4">
+              {i18n.language === 'km' ? 'បន្ថែមគណនីសៀវភៅធំថ្មី' : 'Add General Ledger Account'}
+            </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Account Code</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  {i18n.language === 'km' ? 'លេខកូដគណនី' : 'Account Code'}
+                </label>
                 <input
                   type="text"
                   required
@@ -151,7 +166,9 @@ export const ChartOfAccounts: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Account Name</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  {i18n.language === 'km' ? 'ឈ្មោះគណនី' : 'Account Name'}
+                </label>
                 <input
                   type="text"
                   required
@@ -163,17 +180,19 @@ export const ChartOfAccounts: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Account Category</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  {i18n.language === 'km' ? 'ប្រភេទគណនី' : 'Account Category'}
+                </label>
                 <select
                   value={formData.accountType}
                   onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
                   className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold"
                 >
-                  <option value="ASSET">ASSET</option>
-                  <option value="LIABILITY">LIABILITY</option>
-                  <option value="EQUITY">EQUITY</option>
-                  <option value="REVENUE">REVENUE</option>
-                  <option value="EXPENSE">EXPENSE</option>
+                  <option value="ASSET">{i18n.language === 'km' ? 'ទ្រព្យសកម្ម (ASSET)' : 'ASSET'}</option>
+                  <option value="LIABILITY">{i18n.language === 'km' ? 'បំណុល (LIABILITY)' : 'LIABILITY'}</option>
+                  <option value="EQUITY">{i18n.language === 'km' ? 'មូលធន (EQUITY)' : 'EQUITY'}</option>
+                  <option value="REVENUE">{i18n.language === 'km' ? 'ចំណូល (REVENUE)' : 'REVENUE'}</option>
+                  <option value="EXPENSE">{i18n.language === 'km' ? 'ចំណាយ (EXPENSE)' : 'EXPENSE'}</option>
                 </select>
               </div>
             </div>
@@ -184,13 +203,13 @@ export const ChartOfAccounts: React.FC = () => {
                 onClick={() => setShowModal(false)}
                 className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs"
               >
-                Cancel
+                {i18n.language === 'km' ? 'បោះបង់' : 'Cancel'}
               </button>
               <button
                 type="submit"
                 className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs"
               >
-                Create Account
+                {i18n.language === 'km' ? 'រក្សាទុកគណនី' : 'Create Account'}
               </button>
             </div>
           </form>

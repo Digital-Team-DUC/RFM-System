@@ -148,9 +148,9 @@ export const Dashboard: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 {i18n.language === 'km' ? 'ថ្ងៃនេះ' : 'Today'}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs">{benchmarks.today?.plotsSold || 0}</span>
-                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 inline-flex items-center gap-1.5 shadow-sm">
+                <span className="font-mono font-bold text-xs bg-emerald-950/60 text-emerald-200 px-1.5 py-0.5 rounded border border-emerald-500/30">{benchmarks.today?.plotsSold || 0}</span>
+                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
             <div className="space-y-1.5 mt-3">
@@ -187,9 +187,9 @@ export const Dashboard: React.FC = () => {
                 <Calendar className="w-3.5 h-3.5" />
                 {i18n.language === 'km' ? 'ខែនេះ' : 'This Month'}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs">{benchmarks.thisMonth?.plotsSold || 0}</span>
-                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 inline-flex items-center gap-1.5 shadow-sm">
+                <span className="font-mono font-bold text-xs bg-blue-950/60 text-blue-200 px-1.5 py-0.5 rounded border border-blue-500/30">{benchmarks.thisMonth?.plotsSold || 0}</span>
+                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
             <div className="space-y-1.5 mt-3">
@@ -226,9 +226,9 @@ export const Dashboard: React.FC = () => {
                 <Clock className="w-3.5 h-3.5" />
                 {i18n.language === 'km' ? 'ឆ្នាំនេះ' : 'This Year'}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs">{benchmarks.thisYear?.plotsSold || 0}</span>
-                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 inline-flex items-center gap-1.5 shadow-sm">
+                <span className="font-mono font-bold text-xs bg-purple-950/60 text-purple-200 px-1.5 py-0.5 rounded border border-purple-500/30">{benchmarks.thisYear?.plotsSold || 0}</span>
+                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
             <div className="space-y-1.5 mt-3">

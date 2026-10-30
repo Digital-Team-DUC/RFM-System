@@ -130,3 +130,123 @@ html[lang="km"] code,
 html[lang="km"] pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
 }
+
+/* ==========================================================================
+   PRINT SPECIFICATION & REPORT PAPER ENGINE
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+
+  /* Reset layout & backgrounds to crisp white paper standard */
+  *,
+  *::before,
+  *::after {
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    font-size: 10pt !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Completely eliminate application UI chrome */
+  aside,
+  nav,
+  header,
+  .print\:hidden,
+  [data-print-hidden] {
+    display: none !important;
+  }
+
+  /* Full paper width for report container */
+  main,
+  .flex-1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Transform dark theme panels into clean, high-contrast printed paper cards */
+  .glass-panel,
+  .glass-card,
+  [class*="bg-slate-9"],
+  [class*="bg-slate-8"] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* High-contrast typography for paper printing */
+  .text-white,
+  .text-slate-100,
+  .text-slate-200,
+  .text-slate-300 {
+    color: #0f172a !important;
+  }
+
+  .text-slate-400,
+  .text-slate-500 {
+    color: #475569 !important;
+  }
+
+  .text-emerald-400,
+  .text-emerald-300 {
+    color: #047857 !important;
+  }
+
+  .text-rose-400,
+  .text-rose-300 {
+    color: #be123c !important;
+  }
+
+  .text-blue-400,
+  .text-blue-300 {
+    color: #1d4ed8 !important;
+  }
+
+  .text-teal-400,
+  .text-teal-300 {
+    color: #0f766e !important;
+  }
+
+  .border-slate-800,
+  .border-slate-700 {
+    border-color: #e2e8f0 !important;
+  }
+
+  /* Page break rules: Keep table rows & summary cards intact without ugly folds */
+  tr,
+  th,
+  td,
+  .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure table headers repeat across multi-page tables */
+  thead {
+    display: table-header-group !important;
+  }
+}

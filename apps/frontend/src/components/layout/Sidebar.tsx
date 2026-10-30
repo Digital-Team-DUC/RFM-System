@@ -92,15 +92,15 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-950 flex flex-col shrink-0 h-screen sticky top-0 overflow-y-auto">
       {/* Brand Header */}
-      <div className="h-16 px-6 border-b border-slate-800 flex items-center space-x-3 bg-slate-900/40">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
-          <Sparkles className="w-5 h-5" />
+      <div className="h-16 px-5 border-b border-slate-800 flex items-center space-x-3 bg-slate-900/40">
+        <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-lg shadow-emerald-500/10 border border-slate-700/40 shrink-0 overflow-hidden">
+          <img src="/rfm-logo.png" alt="RFM System Logo" className="w-full h-full object-contain" />
         </div>
-        <div>
-          <span className="font-extrabold text-base tracking-tight text-white block">
+        <div className="min-w-0">
+          <span className="font-extrabold text-base tracking-tight text-white block truncate leading-tight">
             RFM SYSTEM
           </span>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block -mt-1">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block">
             Enterprise ERP
           </span>
         </div>
