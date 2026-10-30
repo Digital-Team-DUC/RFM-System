@@ -24,6 +24,10 @@ export const AddPhaseModal: React.FC<AddPhaseModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!projectId) {
+      setErrorMsg(t('masterPlan.noProjectError', 'No project selected. Please create or select a project first.'));
+      return;
+    }
     if (!title.trim()) {
       setErrorMsg('Phase or Sheet title is required');
       return;

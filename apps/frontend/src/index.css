@@ -63,8 +63,10 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Dark mode form controls & date inputs */
+/* Dark mode form controls & date inputs across all browsers */
 input[type="date"],
+input[type="datetime-local"],
+input[type="time"],
 input[type="text"],
 input[type="number"],
 input[type="email"],
@@ -74,15 +76,32 @@ textarea {
   color-scheme: dark !important;
 }
 
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"] {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
-  filter: invert(0.8) brightness(1.2);
-  opacity: 0.8;
+  filter: invert(0.9) brightness(1.2);
+  opacity: 0.85;
   transition: opacity 0.2s ease;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
+}
+
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #f8fafc !important;
 }
 
 /* Khmer Typography & High-Definition Font System */
@@ -95,19 +114,7 @@ html.lang-km,
 
 html[lang="km"] body,
 html.lang-km body,
-html[lang="km"] input,
-html[lang="km"] select,
-html[lang="km"] textarea,
-html[lang="km"] button,
-html[lang="km"] h1,
-html[lang="km"] h2,
-html[lang="km"] h3,
-html[lang="km"] h4,
-html[lang="km"] h5,
-html[lang="km"] h6,
-html[lang="km"] p,
-html[lang="km"] span:not(.font-mono),
-html[lang="km"] div:not(.font-mono) {
+html[lang="km"] *:not(.font-mono):not(code):not(pre) {
   font-family: 'Kantumruy Pro', 'Battambang', system-ui, -apple-system, sans-serif !important;
   letter-spacing: 0.01em;
 }

@@ -176,6 +176,13 @@ export class MasterPlanService {
       fileUrl?: string;
     },
   ) {
+    const project = await this.prisma.project.findUnique({
+      where: { id: projectId },
+    });
+    if (!project) {
+      throw new NotFoundException(`Project with ID "${projectId}" not found. Please select or create an active project.`);
+    }
+
     const asset = await this.prisma.masterPlanAsset.create({
       data: {
         projectId,
@@ -440,6 +447,9 @@ export class MasterPlanService {
             where: { id: projectId },
             select: { code: true },
           });
+          if (!project) {
+            throw new NotFoundException(`Associated project with ID "${projectId}" not found in database.`);
+          }
           const prefix = project?.code ? `${project.code}-` : 'PROP-';
           const unitNum = pInfo.unitNumber || data.label || 'U-1';
           const sanitizedUnit = unitNum.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();

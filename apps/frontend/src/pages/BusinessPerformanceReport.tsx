@@ -273,9 +273,9 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 {t('performance.today')}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 inline-flex items-center gap-1.5 shadow-sm leading-normal">
+              <span className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 inline-flex items-center gap-1.5 shadow-sm leading-normal">
                 <span className="font-mono font-bold text-xs">{benchmarks.today?.plotsSold || 0}</span>
-                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+                <span>{i18n.language === 'km' ? ' ឡូត៍ លក់បាន' : ' Plots Sold'}</span>
               </span>
             </div>
 
@@ -317,9 +317,9 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <Calendar className="w-3.5 h-3.5" />
                 {t('performance.thisMonth')}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 inline-flex items-center gap-1.5 shadow-sm leading-normal">
+              <span className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 inline-flex items-center gap-1.5 shadow-sm leading-normal">
                 <span className="font-mono font-bold text-xs">{benchmarks.thisMonth?.plotsSold || 0}</span>
-                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+                <span>{i18n.language === 'km' ? ' ឡូត៍ លក់បាន' : ' Plots Sold'}</span>
               </span>
             </div>
 
@@ -361,9 +361,9 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <Clock className="w-3.5 h-3.5" />
                 {t('performance.thisYear')}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 inline-flex items-center gap-1.5 shadow-sm leading-normal">
+              <span className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 inline-flex items-center gap-1.5 shadow-sm leading-normal">
                 <span className="font-mono font-bold text-xs">{benchmarks.thisYear?.plotsSold || 0}</span>
-                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+                <span>{i18n.language === 'km' ? ' ឡូត៍ លក់បាន' : ' Plots Sold'}</span>
               </span>
             </div>
 

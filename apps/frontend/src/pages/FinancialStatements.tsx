@@ -51,16 +51,16 @@ export const FinancialStatements: React.FC = () => {
         <div>
           <h1 className="text-xl font-black text-white flex items-center space-x-2">
             <BarChart3 className="w-5 h-5 text-emerald-400" />
-            <span>{t('nav.financialStatements')}</span>
+            <span>{t('statements.title', t('nav.financialStatements'))}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Official double-entry statutory accounting statements and accounts receivable aging
+            {t('statements.subtitle')}
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-slate-800 pb-2 text-xs">
+      <div className="flex flex-wrap gap-2 border-b border-slate-800 pb-2 text-xs">
         <button
           onClick={() => setActiveTab('pnl')}
           className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
@@ -70,7 +70,7 @@ export const FinancialStatements: React.FC = () => {
           }`}
         >
           <TrendingUp className="w-3.5 h-3.5" />
-          <span>Profit & Loss Statement</span>
+          <span>{t('statements.tabs.pnl')}</span>
         </button>
 
         <button
@@ -82,7 +82,7 @@ export const FinancialStatements: React.FC = () => {
           }`}
         >
           <Scale className="w-3.5 h-3.5" />
-          <span>Balance Sheet</span>
+          <span>{t('statements.tabs.balanceSheet')}</span>
         </button>
 
         <button
@@ -94,7 +94,7 @@ export const FinancialStatements: React.FC = () => {
           }`}
         >
           <CheckCircle className="w-3.5 h-3.5" />
-          <span>Trial Balance</span>
+          <span>{t('statements.tabs.trialBalance')}</span>
         </button>
 
         <button
@@ -106,7 +106,7 @@ export const FinancialStatements: React.FC = () => {
           }`}
         >
           <Clock className="w-3.5 h-3.5" />
-          <span>Accounts Receivable (AR) Aging</span>
+          <span>{t('statements.tabs.arAging')}</span>
         </button>
       </div>
 
@@ -118,14 +118,14 @@ export const FinancialStatements: React.FC = () => {
         /* 1. PROFIT & LOSS STATEMENT */
         <div className="glass-panel rounded-2xl p-6 max-w-4xl space-y-6">
           <div className="border-b border-slate-800 pb-4">
-            <h2 className="text-base font-bold text-white">Profit & Loss Statement (Income Statement)</h2>
-            <p className="text-xs text-slate-400">For the Current Operating Fiscal Period</p>
+            <h2 className="text-base font-bold text-white">{t('statements.pnl.title')}</h2>
+            <p className="text-xs text-slate-400">{t('statements.pnl.subtitle')}</p>
           </div>
 
           {/* Revenues */}
           <div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">
-              Operating Revenues
+              {t('statements.pnl.operatingRevenues')}
             </h3>
             <div className="divide-y divide-slate-800/60 text-xs">
               {pnl?.revenues?.map((r: any) => (
@@ -138,7 +138,7 @@ export const FinancialStatements: React.FC = () => {
                 </div>
               ))}
               <div className="py-3 flex justify-between font-black text-emerald-400 border-t border-slate-700">
-                <span>Total Operating Revenues</span>
+                <span>{t('statements.pnl.totalRevenues')}</span>
                 <span>{formatCurrency(pnl?.totalRevenue, Currency.USD)}</span>
               </div>
             </div>
@@ -147,7 +147,7 @@ export const FinancialStatements: React.FC = () => {
           {/* Expenses */}
           <div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-rose-400 mb-2">
-              Operating Expenses & Cost of Sales
+              {t('statements.pnl.operatingExpenses')}
             </h3>
             <div className="divide-y divide-slate-800/60 text-xs">
               {pnl?.expenses?.map((e: any) => (
@@ -160,7 +160,7 @@ export const FinancialStatements: React.FC = () => {
                 </div>
               ))}
               <div className="py-3 flex justify-between font-black text-rose-400 border-t border-slate-700">
-                <span>Total Operating Expenses</span>
+                <span>{t('statements.pnl.totalExpenses')}</span>
                 <span>{formatCurrency(pnl?.totalExpense, Currency.USD)}</span>
               </div>
             </div>
@@ -168,7 +168,7 @@ export const FinancialStatements: React.FC = () => {
 
           {/* Net Operating Income */}
           <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex justify-between items-center text-sm font-black">
-            <span className="text-white">Net Operating Profit / (Loss)</span>
+            <span className="text-white">{t('statements.pnl.netIncome')}</span>
             <span
               className={`text-lg font-mono ${
                 pnl?.netIncome >= 0 ? 'text-emerald-400' : 'text-rose-400'
@@ -183,18 +183,18 @@ export const FinancialStatements: React.FC = () => {
         <div className="glass-panel rounded-2xl p-6 max-w-4xl space-y-6">
           <div className="border-b border-slate-800 pb-4 flex justify-between items-center">
             <div>
-              <h2 className="text-base font-bold text-white">Consolidated Balance Sheet</h2>
-              <p className="text-xs text-slate-400">Statement of Financial Position</p>
+              <h2 className="text-base font-bold text-white">{t('statements.balanceSheet.title')}</h2>
+              <p className="text-xs text-slate-400">{t('statements.balanceSheet.subtitle')}</p>
             </div>
             <div className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center space-x-1.5">
               <CheckCircle className="w-3.5 h-3.5" />
-              <span>Balanced (Assets = Liabilities + Equity)</span>
+              <span>{t('statements.balanceSheet.balanced')}</span>
             </div>
           </div>
 
           {/* Assets */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">Assets</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">{t('statements.balanceSheet.assets')}</h3>
             <div className="divide-y divide-slate-800/60 text-xs">
               {balanceSheet?.assets?.map((a: any) => (
                 <div key={a.code} className="py-2.5 flex justify-between">
@@ -206,7 +206,7 @@ export const FinancialStatements: React.FC = () => {
                 </div>
               ))}
               <div className="py-3 flex justify-between font-black text-emerald-400 border-t border-slate-700">
-                <span>Total Assets</span>
+                <span>{t('statements.balanceSheet.totalAssets')}</span>
                 <span>{formatCurrency(balanceSheet?.totalAssets, Currency.USD)}</span>
               </div>
             </div>
@@ -214,7 +214,7 @@ export const FinancialStatements: React.FC = () => {
 
           {/* Liabilities */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Liabilities</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">{t('statements.balanceSheet.liabilities')}</h3>
             <div className="divide-y divide-slate-800/60 text-xs">
               {balanceSheet?.liabilities?.map((l: any) => (
                 <div key={l.code} className="py-2.5 flex justify-between">
@@ -226,7 +226,7 @@ export const FinancialStatements: React.FC = () => {
                 </div>
               ))}
               <div className="py-3 flex justify-between font-black text-amber-400 border-t border-slate-700">
-                <span>Total Liabilities</span>
+                <span>{t('statements.balanceSheet.totalLiabilities')}</span>
                 <span>{formatCurrency(balanceSheet?.totalLiabilities, Currency.USD)}</span>
               </div>
             </div>
@@ -234,7 +234,7 @@ export const FinancialStatements: React.FC = () => {
 
           {/* Equity */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">Owner's Equity</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">{t('statements.balanceSheet.equity')}</h3>
             <div className="divide-y divide-slate-800/60 text-xs">
               {balanceSheet?.equity?.map((e: any) => (
                 <div key={e.code} className="py-2.5 flex justify-between">
@@ -246,13 +246,13 @@ export const FinancialStatements: React.FC = () => {
                 </div>
               ))}
               <div className="py-2.5 flex justify-between">
-                <span className="text-slate-300">Current Period Retained Earnings</span>
+                <span className="text-slate-300">{t('statements.balanceSheet.retainedEarningsCurrent')}</span>
                 <span className="font-bold text-white">
                   {formatCurrency(balanceSheet?.retainedEarningsCurrent, Currency.USD)}
                 </span>
               </div>
               <div className="py-3 flex justify-between font-black text-blue-400 border-t border-slate-700">
-                <span>Total Equity</span>
+                <span>{t('statements.balanceSheet.totalEquity')}</span>
                 <span>{formatCurrency(balanceSheet?.totalEquity, Currency.USD)}</span>
               </div>
             </div>
@@ -262,20 +262,20 @@ export const FinancialStatements: React.FC = () => {
         /* 3. TRIAL BALANCE */
         <div className="glass-panel rounded-2xl overflow-hidden border border-slate-800">
           <div className="p-4 border-b border-slate-800 flex justify-between items-center">
-            <h2 className="text-sm font-bold text-white">Trial Balance Worksheet</h2>
+            <h2 className="text-sm font-bold text-white">{t('statements.trialBalance.title')}</h2>
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              Debits: ${trialBalance?.totalDebits?.toLocaleString()} == Credits: ${trialBalance?.totalCredits?.toLocaleString()}
+              {t('statements.trialBalance.debits')}: ${trialBalance?.totalDebits?.toLocaleString()} == {t('statements.trialBalance.credits')}: ${trialBalance?.totalCredits?.toLocaleString()}
             </span>
           </div>
 
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
               <tr>
-                <th className="py-3 px-4">Code</th>
-                <th className="py-3 px-4">Account Name</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4 text-right">Debit ($)</th>
-                <th className="py-3 px-4 text-right">Credit ($)</th>
+                <th className="py-3 px-4">{t('statements.trialBalance.code')}</th>
+                <th className="py-3 px-4">{t('statements.trialBalance.accountName')}</th>
+                <th className="py-3 px-4">{t('statements.trialBalance.category')}</th>
+                <th className="py-3 px-4 text-right">{t('statements.trialBalance.debitCol')}</th>
+                <th className="py-3 px-4 text-right">{t('statements.trialBalance.creditCol')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-medium">
@@ -294,7 +294,7 @@ export const FinancialStatements: React.FC = () => {
               ))}
               <tr className="bg-slate-900/90 font-black text-white text-xs border-t-2 border-slate-700">
                 <td colSpan={3} className="py-3 px-4 uppercase">
-                  Grand Total Reconciled
+                  {t('statements.trialBalance.grandTotal')}
                 </td>
                 <td className="py-3 px-4 text-right font-mono text-emerald-400">
                   {formatCurrency(trialBalance?.totalDebits, Currency.USD)}
@@ -311,31 +311,31 @@ export const FinancialStatements: React.FC = () => {
         <div className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             <div className="glass-card p-4 rounded-xl">
-              <span className="text-[10px] text-slate-500 uppercase font-bold block">Current / 0-30d</span>
+              <span className="text-[10px] text-slate-500 uppercase font-bold block">{t('statements.arAging.currentBucket')}</span>
               <span className="text-lg font-bold text-emerald-400 mt-1 block">
                 {formatCurrency(arAging?.summary?.currentBucket, Currency.USD)}
               </span>
             </div>
             <div className="glass-card p-4 rounded-xl">
-              <span className="text-[10px] text-slate-500 uppercase font-bold block">31-60 Days</span>
+              <span className="text-[10px] text-slate-500 uppercase font-bold block">{t('statements.arAging.days31_60')}</span>
               <span className="text-lg font-bold text-blue-400 mt-1 block">
                 {formatCurrency(arAging?.summary?.days31_60, Currency.USD)}
               </span>
             </div>
             <div className="glass-card p-4 rounded-xl">
-              <span className="text-[10px] text-slate-500 uppercase font-bold block">61-90 Days</span>
+              <span className="text-[10px] text-slate-500 uppercase font-bold block">{t('statements.arAging.days61_90')}</span>
               <span className="text-lg font-bold text-amber-400 mt-1 block">
                 {formatCurrency(arAging?.summary?.days61_90, Currency.USD)}
               </span>
             </div>
             <div className="glass-card p-4 rounded-xl">
-              <span className="text-[10px] text-slate-500 uppercase font-bold block">Over 90 Days</span>
+              <span className="text-[10px] text-slate-500 uppercase font-bold block">{t('statements.arAging.over90')}</span>
               <span className="text-lg font-bold text-rose-400 mt-1 block">
                 {formatCurrency(arAging?.summary?.over90, Currency.USD)}
               </span>
             </div>
             <div className="glass-card p-4 rounded-xl bg-slate-900 border-emerald-500/30">
-              <span className="text-[10px] text-emerald-400 uppercase font-bold block">Total AR Balance</span>
+              <span className="text-[10px] text-emerald-400 uppercase font-bold block">{t('statements.arAging.totalAr')}</span>
               <span className="text-lg font-black text-white mt-1 block">
                 {formatCurrency(arAging?.summary?.totalAr, Currency.USD)}
               </span>
@@ -346,12 +346,12 @@ export const FinancialStatements: React.FC = () => {
             <table className="w-full text-left text-xs text-slate-300">
               <thead className="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Contract #</th>
-                  <th className="py-3 px-4">Customer</th>
-                  <th className="py-3 px-4">Property</th>
-                  <th className="py-3 px-4">Due Date</th>
-                  <th className="py-3 px-4 text-right">Outstanding</th>
-                  <th className="py-3 px-4 text-center">Aging Bucket</th>
+                  <th className="py-3 px-4">{t('statements.arAging.contractNo')}</th>
+                  <th className="py-3 px-4">{t('statements.arAging.customer')}</th>
+                  <th className="py-3 px-4">{t('statements.arAging.property')}</th>
+                  <th className="py-3 px-4">{t('statements.arAging.dueDate')}</th>
+                  <th className="py-3 px-4 text-right">{t('statements.arAging.outstanding')}</th>
+                  <th className="py-3 px-4 text-center">{t('statements.arAging.agingBucket')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-medium">

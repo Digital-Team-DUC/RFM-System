@@ -1,3 +1,4 @@
+import { Link as RouterLink } from 'react-router-dom';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
@@ -44,7 +45,7 @@ import {
 } from 'lucide-react';
 
 export const MasterPlan: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { selectedProjectId } = useAuth();
   const { socket } = useSocket();
 
@@ -377,7 +378,30 @@ export const MasterPlan: React.FC = () => {
         </div>
       </div>
 
-      {/* Phase / Sheet Switcher Bar */}
+      {projects.length === 0 ? (
+        <div className="glass-panel p-12 rounded-3xl text-center space-y-4 max-w-lg mx-auto my-12 border border-slate-800">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto">
+            <Building className="w-8 h-8" />
+          </div>
+          <h3 className="text-base font-bold text-white">
+            {i18n.language === 'km' ? 'មិនទាន់មានគម្រោងអភិវឌ្ឍន៍នៅឡើយទេ' : 'No Projects Found'}
+          </h3>
+          <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+            {i18n.language === 'km'
+              ? 'ដើម្បីចាប់ផ្ដើមរចនាប្លង់មេ Master Plan សូមបង្កើតគម្រោងអចលនទ្រព្យថ្មីមួយជាមុនសិន។'
+              : 'To begin designing an interactive master plan, please create a real estate project first.'}
+          </p>
+          <RouterLink
+            to="/projects"
+            className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-emerald-500/20"
+          >
+            <Plus className="w-4 h-4" />
+            <span>{i18n.language === 'km' ? '+ បង្កើតគម្រោងថ្មី' : '+ Create New Project'}</span>
+          </RouterLink>
+        </div>
+      ) : (
+        <>
+        {/* Phase / Sheet Switcher Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-2 font-sans">
         {/* Phase Tabs */}
         <div className="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
@@ -985,6 +1009,9 @@ export const MasterPlan: React.FC = () => {
             showToast(`Road "${newRoad.label}" added to site plan`);
           }}
         />
+      )}
+
+      </>
       )}
 
       {/* Add Amenity Modal */}
