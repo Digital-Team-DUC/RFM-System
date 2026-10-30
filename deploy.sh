@@ -54,7 +54,8 @@ echo "🔄 Pushing Prisma Database Schema to PostgreSQL..."
 sudo docker compose exec -T backend npx prisma db push --accept-data-loss
 
 echo "🌱 Seeding Initial Database Admin, Roles & Permissions..."
-sudo docker compose exec -T backend npx prisma db seed || sudo docker compose exec -T backend npx ts-node prisma/seed.ts || true
+sudo docker cp apps/backend/prisma/seed-admin.cjs rfm_backend:/app/apps/backend/prisma/seed-admin.cjs || true
+sudo docker compose exec -T backend node prisma/seed-admin.cjs || true
 
 echo "🧹 Ensuring Clean Financial Balances ($0.00)..."
 sudo docker compose exec -T backend node scripts/clear-demo-data.cjs || true
