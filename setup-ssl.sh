@@ -148,28 +148,24 @@ http {
 }
 NGINX_CONF
 
-# 5. Update docker-compose.yml to expose port 443 and mount /etc/letsencrypt
+# 5. Ensure docker-compose.yml has Port 443 and SSL volumes
 echo "⚙️ Updating docker-compose.yml with Port 443 and SSL volumes..."
-node -e "
-const fs = require('fs');
-let dc = fs.readFileSync('docker-compose.yml', 'utf8').replace(/\\r\\n/g, '\n');
-
-if (!dc.includes('443:443')) {
-  dc = dc.replace(
-    '    ports:\n      - \"80:80\"',
-    '    ports:\n      - \"80:80\"\n      - \"443:443\"'
-  );
-}
-
-if (!dc.includes('/etc/letsencrypt:/etc/letsencrypt:ro')) {
-  dc = dc.replace(
-    '    volumes:\n      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro',
-    '    volumes:\n      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro\n      - /etc/letsencrypt:/etc/letsencrypt:ro'
-  );
-}
-
-fs.writeFileSync('docker-compose.yml', dc, 'utf8');
-"
+python3 -c "
+with open('docker-compose.yml', 'r') as f:
+    dc = f.read()
+if '443:443' not in dc:
+    dc = dc.replace('    ports:
+      - "80:80"', '    ports:
+      - "80:80"
+      - "443:443"')
+if '/etc/letsencrypt:/etc/letsencrypt:ro' not in dc:
+    dc = dc.replace('    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro', '    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro')
+with open('docker-compose.yml', 'w') as f:
+    f.write(dc)
+" || true
 
 # 6. Restart Proxy with SSL
 echo "🚀 Starting containers with full SSL..."
@@ -185,3 +181,4 @@ echo "🎉 HTTPS SETUP COMPLETE!"
 echo "🌐 Your secure system is now live at:"
 echo "   https://$DOMAIN"
 echo "=========================================================="
+
