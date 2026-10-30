@@ -5,6 +5,16 @@ echo "=========================================================="
 echo "🚀 RFM Enterprise ERP — Automated AWS Ubuntu Deployment"
 echo "=========================================================="
 
+# 0. Setup 2GB Swap for low-RAM AWS instances (prevents build freeze/OOM)
+if [ ! -f /swapfile ] && [ $(free -m | awk '/^Mem:/{print $2}') -le 2048 ]; then
+    echo "⚡ Adding 2GB swap space for low-memory VPS..."
+    sudo fallocate -l 2G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=2048
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile || true
+    echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab || true
+fi
+
 # 1. Update system packages
 sudo apt-get update -y
 

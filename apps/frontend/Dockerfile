@@ -16,7 +16,7 @@ COPY apps/frontend ./apps/frontend
 RUN npm run build --workspace=@rfm/shared
 
 WORKDIR /app/apps/frontend
-RUN npm run build
+RUN npx vite build
 
 # Stage 2: Serve via Nginx
 FROM nginx:alpine AS runner

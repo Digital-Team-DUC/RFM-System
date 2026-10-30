@@ -35,6 +35,7 @@ services:
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
+    image: rfm_backend:latest
     container_name: rfm_backend
     restart: unless-stopped
     depends_on:
@@ -55,9 +56,7 @@ services:
       - "4000:4000"
 
   worker:
-    build:
-      context: .
-      dockerfile: apps/backend/Dockerfile
+    image: rfm_backend:latest
     container_name: rfm_worker
     restart: unless-stopped
     depends_on:
