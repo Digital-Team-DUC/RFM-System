@@ -86,6 +86,12 @@ export const api = {
       body: JSON.stringify(data),
     }),
 
+  put: <T = any>(url: string, data?: any) =>
+    request<T>(url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
   delete: <T = any>(url: string) =>
     request<T>(url, {
       method: 'DELETE',

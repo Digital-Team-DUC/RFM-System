@@ -78,7 +78,7 @@ export const Navbar: React.FC = () => {
           onChange={(e) => setSelectedProjectId(e.target.value)}
           className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
         >
-          <option value="">{i18n.language === 'km' ? 'គ្រប់គម្រោងទាំងអស់ (All Projects)' : 'All Projects (Portfolio View)'}</option>
+          <option value="">{t('navbar.allProjects')}</option>
           {projects.map((p) => (
             <option key={p.id} value={p.id}>
               {p.code} — {p.name}
@@ -89,7 +89,7 @@ export const Navbar: React.FC = () => {
         {/* Real-time Connection Indicator */}
         <div className="hidden md:flex items-center space-x-1.5 text-xs px-2.5 py-1 rounded-full bg-slate-800/80 border border-slate-700">
           <span className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`} />
-          <span className="text-slate-400 font-mono">{connected ? 'Live Sync' : 'Offline'}</span>
+          <span className="text-slate-400 font-mono">{connected ? t('navbar.liveSync') : t('navbar.offline')}</span>
         </div>
       </div>
 
@@ -123,20 +123,20 @@ export const Navbar: React.FC = () => {
             <div className="absolute right-0 mt-2 w-80 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden z-50">
               <div className="p-3 border-b border-slate-800 flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  {i18n.language === 'km' ? 'ការជូនដំណឹង (Notifications)' : 'Notifications'}
+                  {t('navbar.notifications')}
                 </span>
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllRead}
                     className="text-[11px] text-emerald-400 hover:underline font-medium"
                   >
-                    Mark all read
+                    {t('navbar.markAllRead')}
                   </button>
                 )}
               </div>
               <div className="max-h-72 overflow-y-auto divide-y divide-slate-800/60">
                 {notifications.length === 0 ? (
-                  <div className="p-4 text-center text-xs text-slate-500">No notifications</div>
+                  <div className="p-4 text-center text-xs text-slate-500">{t('navbar.noNotifications')}</div>
                 ) : (
                   notifications.map((n) => (
                     <div

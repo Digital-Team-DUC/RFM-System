@@ -18,6 +18,7 @@ import {
   BookOpen,
   Split,
   BarChart3,
+  TrendingUp,
   ShieldAlert,
   Settings,
   Sparkles,
@@ -41,7 +42,7 @@ export const Sidebar: React.FC = () => {
 
   const navSections: NavSection[] = [
     {
-      title: 'Portfolio & Inventory',
+      title: t('nav.sections.portfolio'),
       items: [
         { to: '/', label: t('nav.dashboard'), icon: LayoutDashboard },
         { to: '/projects', label: t('nav.projects'), icon: Building, permission: 'properties.read' },
@@ -50,7 +51,7 @@ export const Sidebar: React.FC = () => {
       ],
     },
     {
-      title: 'CRM & Sales',
+      title: t('nav.sections.crm'),
       items: [
         { to: '/crm/leads', label: t('nav.crm'), icon: UserCheck, permission: 'crm.read' },
         { to: '/crm/customers', label: t('nav.customers'), icon: Users, permission: 'crm.read' },
@@ -61,8 +62,9 @@ export const Sidebar: React.FC = () => {
       ],
     },
     {
-      title: 'Finance & Accounting',
+      title: t('nav.sections.finance'),
       items: [
+        { to: '/reports/performance', label: t('nav.executiveReport'), icon: TrendingUp },
         { to: '/finance/expenses', label: t('nav.expenses'), icon: Receipt, permission: 'expenses.create' },
         { to: '/finance/accounts', label: t('nav.bankAccounts'), icon: Wallet, permission: 'accounting.read' },
         { to: '/accounting/coa', label: t('nav.chartOfAccounts'), icon: BookOpen, permission: 'accounting.read' },
@@ -71,7 +73,7 @@ export const Sidebar: React.FC = () => {
       ],
     },
     {
-      title: 'System & Admin',
+      title: t('nav.sections.admin'),
       items: [
         { to: '/admin/users', label: t('nav.users'), icon: Users, permission: 'users.manage' },
         { to: '/admin/audit', label: t('nav.auditLogs'), icon: ShieldAlert, permission: 'audit.read' },

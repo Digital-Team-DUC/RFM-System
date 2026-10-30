@@ -22,6 +22,7 @@ import { BankAccounts } from './pages/BankAccounts';
 import { ChartOfAccounts } from './pages/ChartOfAccounts';
 import { JournalEntries } from './pages/JournalEntries';
 import { FinancialStatements } from './pages/FinancialStatements';
+import { BusinessPerformanceReport } from './pages/BusinessPerformanceReport';
 import { UsersManagement } from './pages/UsersManagement';
 import { AuditLogs } from './pages/AuditLogs';
 import { SystemSettings } from './pages/SystemSettings';
@@ -154,6 +155,22 @@ export const App: React.FC = () => {
                 element={
                   <ProtectedRoute permission="accounting.read">
                     <FinancialStatements />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="reports/performance"
+                element={
+                  <ProtectedRoute permission="accounting.read">
+                    <BusinessPerformanceReport />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="reports/business-summary"
+                element={
+                  <ProtectedRoute permission="accounting.read">
+                    <BusinessPerformanceReport />
                   </ProtectedRoute>
                 }
               />

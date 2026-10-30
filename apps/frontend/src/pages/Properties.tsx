@@ -138,7 +138,7 @@ export const Properties: React.FC = () => {
             <span>{t('nav.properties')}</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Real estate inventory matrix across projects, villas, land plots, and condominiums
+            {t('properties.subtitle')}
           </p>
         </div>
 
@@ -149,7 +149,7 @@ export const Properties: React.FC = () => {
               className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center space-x-1.5 shadow-lg shadow-emerald-500/20 transition"
             >
               <Plus className="w-4 h-4" />
-              <span>Add Property Unit</span>
+              <span>{t('properties.addUnit')}</span>
             </button>
           )}
 
@@ -184,7 +184,7 @@ export const Properties: React.FC = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search code, title, unit..."
+            placeholder={t('properties.filters.searchPlaceholder')}
             className="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
         </div>
@@ -195,7 +195,7 @@ export const Properties: React.FC = () => {
           onChange={(e) => setFilterProject(e.target.value)}
           className="bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
         >
-          <option value="">All Projects</option>
+          <option value="">{t('properties.filters.allProjects')}</option>
           {projects.map((p) => (
             <option key={p.id} value={p.id}>
               {p.code} — {p.name}
@@ -209,7 +209,7 @@ export const Properties: React.FC = () => {
           onChange={(e) => setFilterStatus(e.target.value)}
           className="bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
         >
-          <option value="">All Statuses</option>
+          <option value="">{t('properties.filters.allStatuses')}</option>
           <option value="AVAILABLE">AVAILABLE</option>
           <option value="RESERVED">RESERVED</option>
           <option value="INSTALLMENT">INSTALLMENT</option>
@@ -223,7 +223,7 @@ export const Properties: React.FC = () => {
           onChange={(e) => setFilterType(e.target.value)}
           className="bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
         >
-          <option value="">All Property Types</option>
+          <option value="">{t('properties.filters.allTypes')}</option>
           <option value="LAND_PLOT">Land Plot</option>
           <option value="VILLA_SINGLE">Single Villa</option>
           <option value="VILLA_TWIN">Twin Villa</option>
@@ -253,13 +253,13 @@ export const Properties: React.FC = () => {
             <table className="w-full text-left text-xs text-slate-300">
               <thead className="bg-slate-900/90 text-slate-400 uppercase font-semibold border-b border-slate-800">
                 <tr>
-                  <th className="py-3.5 px-4">Code / Unit</th>
-                  <th className="py-3.5 px-4">Title & Type</th>
-                  <th className="py-3.5 px-4">Project</th>
-                  <th className="py-3.5 px-4">Area (Land/Bldg)</th>
-                  <th className="py-3.5 px-4">Selling Price</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                  <th className="py-3.5 px-4">{t('properties.unitCode')}</th>
+                  <th className="py-3.5 px-4">{t('properties.propertyType')}</th>
+                  <th className="py-3.5 px-4">{t('properties.project')}</th>
+                  <th className="py-3.5 px-4">{t('properties.area')}</th>
+                  <th className="py-3.5 px-4">{t('properties.price')}</th>
+                  <th className="py-3.5 px-4">{t('properties.status')}</th>
+                  <th className="py-3.5 px-4 text-right">{t('properties.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-medium">
@@ -525,7 +525,7 @@ export const Properties: React.FC = () => {
             className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl overflow-y-auto max-h-[90vh]"
           >
             <div className="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
-              <h3 className="text-base font-bold text-white">Create New Property Unit</h3>
+              <h3 className="text-base font-bold text-white">{t('properties.createTitle')}</h3>
               <button
                 type="button"
                 onClick={() => setShowCreateModal(false)}

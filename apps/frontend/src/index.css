@@ -62,3 +62,64 @@
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* Dark mode form controls & date inputs */
+input[type="date"],
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  color-scheme: dark !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.8) brightness(1.2);
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Khmer Typography & High-Definition Font System */
+html[lang="km"],
+html.lang-km,
+.font-khmer,
+:lang(km) {
+  font-family: 'Kantumruy Pro', 'Battambang', system-ui, -apple-system, sans-serif !important;
+}
+
+html[lang="km"] body,
+html.lang-km body,
+html[lang="km"] input,
+html[lang="km"] select,
+html[lang="km"] textarea,
+html[lang="km"] button,
+html[lang="km"] h1,
+html[lang="km"] h2,
+html[lang="km"] h3,
+html[lang="km"] h4,
+html[lang="km"] h5,
+html[lang="km"] h6,
+html[lang="km"] p,
+html[lang="km"] span:not(.font-mono),
+html[lang="km"] div:not(.font-mono) {
+  font-family: 'Kantumruy Pro', 'Battambang', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0.01em;
+}
+
+/* Give Khmer text comfortable line height so vowels and sub-consonants are NEVER clipped */
+html[lang="km"] {
+  line-height: 1.6;
+}
+
+/* Keep technical numbers, code tags, currency, and IDs clean with monospace */
+html[lang="km"] .font-mono,
+html[lang="km"] code,
+html[lang="km"] pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+}

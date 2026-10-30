@@ -6,12 +6,13 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts",
     "start:dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts",
     "start:prod": "node dist/main",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "ts-node prisma/seed.ts",
+    "db:clear-demo": "node scripts/clear-demo-data.cjs",
     "test": "jest",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },

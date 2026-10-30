@@ -34,7 +34,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'Kantumruy Pro', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Kantumruy Pro', 'Khmer OS Battambang', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Kantumruy Pro', 'Khmer OS Battambang', 'monospace'],
+        khmer: ['Kantumruy Pro', 'Khmer OS Battambang', 'sans-serif'],
       }
     },
   },
