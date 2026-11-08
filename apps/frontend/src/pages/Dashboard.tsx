@@ -148,9 +148,9 @@ export const Dashboard: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 {i18n.language === 'km' ? 'ថ្ងៃនេះ' : 'Today'}
               </span>
-              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs bg-emerald-950/60 text-emerald-200 px-1.5 py-0.5 rounded border border-emerald-500/30">{benchmarks.today?.plotsSold || 0}</span>
-                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-semibold text-emerald-400 inline-flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">{benchmarks.today?.plotsSold || 0}</span>
+                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
             <div className="space-y-1.5 mt-3">
@@ -187,9 +187,9 @@ export const Dashboard: React.FC = () => {
                 <Calendar className="w-3.5 h-3.5" />
                 {i18n.language === 'km' ? 'ខែនេះ' : 'This Month'}
               </span>
-              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs bg-blue-950/60 text-blue-200 px-1.5 py-0.5 rounded border border-blue-500/30">{benchmarks.thisMonth?.plotsSold || 0}</span>
-                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-semibold text-blue-400 inline-flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">{benchmarks.thisMonth?.plotsSold || 0}</span>
+                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
             <div className="space-y-1.5 mt-3">
@@ -226,9 +226,9 @@ export const Dashboard: React.FC = () => {
                 <Clock className="w-3.5 h-3.5" />
                 {i18n.language === 'km' ? 'ឆ្នាំនេះ' : 'This Year'}
               </span>
-              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs bg-purple-950/60 text-purple-200 px-1.5 py-0.5 rounded border border-purple-500/30">{benchmarks.thisYear?.plotsSold || 0}</span>
-                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-semibold text-purple-400 inline-flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">{benchmarks.thisYear?.plotsSold || 0}</span>
+                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
             <div className="space-y-1.5 mt-3">
@@ -265,7 +265,7 @@ export const Dashboard: React.FC = () => {
                 <Home className="w-3.5 h-3.5" />
                 {i18n.language === 'km' ? 'ស្តុកនៅសល់' : 'Stock Remaining'}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 inline-flex items-center gap-1.5 shadow-sm">
+              <span className="text-xs font-sans font-semibold text-amber-400 inline-flex items-center gap-1.5">
                 <span className="font-mono font-bold text-xs">{inventory.availablePlots || 0} / {inventory.totalPlots || 0}</span>
                 <span>{i18n.language === 'km' ? 'ឡូត៍នៅសល់' : 'Available'}</span>
               </span>
@@ -302,9 +302,7 @@ export const Dashboard: React.FC = () => {
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {t('kpi.contractSales')}
             </span>
-            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <TrendingUp className="w-4 h-4" />
-            </div>
+            <TrendingUp className="w-5 h-5 text-emerald-400" />
           </div>
           <div className="text-2xl font-black text-white mt-3 font-mono">
             {formatCurrency(kpis.totalContractSales, Currency.USD)}
@@ -321,9 +319,7 @@ export const Dashboard: React.FC = () => {
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {t('kpi.cashCollected')}
             </span>
-            <div className="p-2 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20">
-              <DollarSign className="w-4 h-4" />
-            </div>
+            <DollarSign className="w-5 h-5 text-teal-400" />
           </div>
           <div className="text-2xl font-black text-teal-300 mt-3 font-mono">
             {formatCurrency(kpis.totalCashCollected, Currency.USD)}
@@ -339,9 +335,7 @@ export const Dashboard: React.FC = () => {
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {t('kpi.outstandingAr')}
             </span>
-            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-              <CreditCard className="w-4 h-4" />
-            </div>
+            <CreditCard className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-2xl font-black text-blue-300 mt-3 font-mono">
             {formatCurrency(kpis.totalOutstandingAr, Currency.USD)}
@@ -349,7 +343,7 @@ export const Dashboard: React.FC = () => {
           <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
             <span>Remaining Contract Receivables</span>
             {kpis.overdueCount > 0 && (
-              <span className="text-amber-400 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px]">
+              <span className="text-amber-400 font-bold text-[10px]">
                 {kpis.overdueCount} Overdue
               </span>
             )}
@@ -362,9 +356,7 @@ export const Dashboard: React.FC = () => {
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {t('kpi.bankBalance')}
             </span>
-            <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
-              <Wallet className="w-4 h-4" />
-            </div>
+            <Wallet className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-2xl font-black text-purple-300 mt-3 font-mono">
             {formatCurrency(kpis.totalBankBalance, Currency.USD)}
@@ -378,9 +370,7 @@ export const Dashboard: React.FC = () => {
       {/* Secondary Quick Metrics Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="glass-card p-4 rounded-xl flex items-center space-x-3">
-          <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400">
-            <Building2 className="w-5 h-5" />
-          </div>
+          <Building2 className="w-5 h-5 text-emerald-400 shrink-0" />
           <div className="font-sans">
             <div className="text-lg font-bold text-white font-mono">{kpis.totalProjects}</div>
             <div className="text-[11px] text-slate-400">{t('kpi.totalProjects')}</div>
@@ -388,9 +378,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <div className="glass-card p-4 rounded-xl flex items-center space-x-3">
-          <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-400">
-            <Home className="w-5 h-5" />
-          </div>
+          <Home className="w-5 h-5 text-amber-400 shrink-0" />
           <div className="font-sans">
             <div className="text-lg font-bold text-white font-mono">{kpis.availableProperties}</div>
             <div className="text-[11px] text-slate-400">{t('dashboard.availablePlotsUnits')}</div>
@@ -398,9 +386,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <div className="glass-card p-4 rounded-xl flex items-center space-x-3">
-          <div className="p-2.5 rounded-lg bg-blue-500/10 text-blue-400">
-            <CreditCard className="w-5 h-5" />
-          </div>
+          <CreditCard className="w-5 h-5 text-blue-400 shrink-0" />
           <div className="font-sans">
             <div className="text-lg font-bold text-white font-mono">{kpis.installmentProperties}</div>
             <div className="text-[11px] text-slate-400">{t('dashboard.activeInstallments')}</div>
@@ -408,9 +394,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <div className="glass-card p-4 rounded-xl flex items-center space-x-3">
-          <div className="p-2.5 rounded-lg bg-rose-500/10 text-rose-400">
-            <Receipt className="w-5 h-5" />
-          </div>
+          <Receipt className="w-5 h-5 text-rose-400 shrink-0" />
           <div className="font-sans">
             <div className="text-lg font-bold text-white font-mono">{formatCurrency(kpis.totalExpenses, Currency.USD)}</div>
             <div className="text-[11px] text-slate-400">{t('kpi.expenses')}</div>

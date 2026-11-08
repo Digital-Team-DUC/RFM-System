@@ -26,7 +26,7 @@
   }
 
   body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+    @apply bg-slate-950 text-slate-100 font-sans antialiased transition-colors duration-200;
     background-image: radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
                       radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
@@ -63,45 +63,256 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Clean Minimalist Status & Code Badges (Removes cluttering pill/box backgrounds) */
+span[class*="bg-emerald-500/"],
+span[class*="bg-blue-500/"],
+span[class*="bg-amber-500/"],
+span[class*="bg-purple-500/"],
+span[class*="bg-rose-500/"],
+span[class*="bg-teal-500/"],
+span[class*="bg-emerald-950/"],
+span[class*="bg-blue-950/"],
+span[class*="bg-purple-950/"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 /* Dark mode form controls & date inputs across all browsers */
-input[type="date"],
-input[type="datetime-local"],
-input[type="time"],
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="password"],
-select,
-textarea {
+html:not(.light) input[type="date"],
+html:not(.light) input[type="datetime-local"],
+html:not(.light) input[type="time"],
+html:not(.light) input[type="text"],
+html:not(.light) input[type="number"],
+html:not(.light) input[type="email"],
+html:not(.light) input[type="password"],
+html:not(.light) select,
+html:not(.light) textarea {
   color-scheme: dark !important;
 }
 
-input[type="date"],
-input[type="datetime-local"],
-input[type="time"] {
+html:not(.light) input[type="date"],
+html:not(.light) input[type="datetime-local"],
+html:not(.light) input[type="time"] {
   background-color: #0f172a !important;
   color: #f8fafc !important;
   border-color: #334155 !important;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+html:not(.light) input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   filter: invert(0.9) brightness(1.2);
   opacity: 0.85;
   transition: opacity 0.2s ease;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+html:not(.light) input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
 
-input[type="date"]::-webkit-datetime-edit,
-input[type="date"]::-webkit-datetime-edit-fields-wrapper,
-input[type="date"]::-webkit-datetime-edit-text,
-input[type="date"]::-webkit-datetime-edit-month-field,
-input[type="date"]::-webkit-datetime-edit-day-field,
-input[type="date"]::-webkit-datetime-edit-year-field {
+html:not(.light) input[type="date"]::-webkit-datetime-edit,
+html:not(.light) input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+html:not(.light) input[type="date"]::-webkit-datetime-edit-text,
+html:not(.light) input[type="date"]::-webkit-datetime-edit-month-field,
+html:not(.light) input[type="date"]::-webkit-datetime-edit-day-field,
+html:not(.light) input[type="date"]::-webkit-datetime-edit-year-field {
   color: #f8fafc !important;
+}
+
+/* ==========================================================================
+   LIGHT MODE THEME ENGINE (html.light)
+   ========================================================================== */
+html.light body,
+html.light .bg-slate-950 {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  background-image: radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.04) 0px, transparent 50%) !important;
+}
+
+html.light aside.bg-slate-950 {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .glass-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 10px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .bg-slate-900,
+html.light .bg-slate-900\/95,
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-900\/50,
+html.light .bg-slate-900\/40 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-slate-950\/80,
+html.light .bg-slate-950\/70,
+html.light .bg-slate-950\/60,
+html.light .bg-slate-950\/50 {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-slate-800,
+html.light .bg-slate-800\/90,
+html.light .bg-slate-800\/80,
+html.light .bg-slate-800\/60,
+html.light .bg-slate-800\/50,
+html.light .bg-slate-800\/40 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .hover\:bg-slate-800:hover,
+html.light .hover\:bg-slate-800\/50:hover,
+html.light .hover\:bg-slate-800\/40:hover,
+html.light .hover\:bg-slate-900\/80:hover {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .hover\:bg-slate-700:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Light Mode Typography */
+html.light .text-white,
+html.light .text-slate-100 {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-200,
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400,
+html.light .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.light .text-emerald-400,
+html.light .text-emerald-300 {
+  color: #059669 !important;
+}
+
+html.light .text-teal-400,
+html.light .text-teal-300 {
+  color: #0d9488 !important;
+}
+
+html.light .text-blue-400,
+html.light .text-blue-300 {
+  color: #2563eb !important;
+}
+
+html.light .text-purple-400,
+html.light .text-purple-300 {
+  color: #7c3aed !important;
+}
+
+html.light .text-amber-400,
+html.light .text-amber-300 {
+  color: #d97706 !important;
+}
+
+html.light .text-rose-400,
+html.light .text-rose-300 {
+  color: #e11d48 !important;
+}
+
+/* Light Mode Borders & Dividers */
+html.light .border-slate-800,
+html.light .border-slate-800\/80,
+html.light .border-slate-800\/60,
+html.light .border-slate-700,
+html.light .border-slate-700\/80,
+html.light .border-slate-700\/60,
+html.light .border-slate-700\/50,
+html.light .border-slate-700\/40 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .divide-slate-800 > :not([hidden]) ~ :not([hidden]),
+html.light .divide-slate-800\/60 > :not([hidden]) ~ :not([hidden]),
+html.light .divide-slate-800\/50 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #e2e8f0 !important;
+}
+
+/* Light Mode Form Controls & Inputs */
+html.light input[type="date"],
+html.light input[type="datetime-local"],
+html.light input[type="time"],
+html.light input[type="text"],
+html.light input[type="number"],
+html.light input[type="email"],
+html.light input[type="password"],
+html.light select,
+html.light textarea {
+  color-scheme: light !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: none !important;
+  opacity: 0.75;
+}
+
+html.light input[type="date"]::-webkit-datetime-edit,
+html.light input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+html.light input[type="date"]::-webkit-datetime-edit-text,
+html.light input[type="date"]::-webkit-datetime-edit-month-field,
+html.light input[type="date"]::-webkit-datetime-edit-day-field,
+html.light input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #0f172a !important;
+}
+
+/* Light Mode Scrollbars & Recharts Tooltips */
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+html.light .recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1) !important;
+}
+html.light .recharts-tooltip-label {
+  color: #0f172a !important;
+  font-weight: 700 !important;
 }
 
 /* Khmer Typography & High-Definition Font System */

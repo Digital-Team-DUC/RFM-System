@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
+import { useTheme } from '../../context/ThemeContext';
 import { api } from '../../services/api';
 import {
   Bell,
@@ -11,13 +12,15 @@ import {
   CheckCircle2,
   AlertTriangle,
   Info,
-  Radio,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user, logout, selectedProjectId, setSelectedProjectId } = useAuth();
   const { connected } = useSocket();
+  const { theme, toggleTheme } = useTheme();
   const [projects, setProjects] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
@@ -68,9 +71,9 @@ export const Navbar: React.FC = () => {
   return (
     <header className="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-40">
       {/* Left: Project Selector */}
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 text-sm font-medium">
-          <Building2 className="w-4 h-4 mr-2" />
+      <div className="flex items-center space-x-3">
+        <div className="flex items-center text-emerald-400 text-sm font-semibold">
+          <Building2 className="w-4 h-4 mr-1.5" />
           <span>{t('nav.projects')}:</span>
         </div>
         <select
@@ -87,14 +90,33 @@ export const Navbar: React.FC = () => {
         </select>
 
         {/* Real-time Connection Indicator */}
-        <div className="hidden md:flex items-center space-x-1.5 text-xs px-2.5 py-1 rounded-full bg-slate-800/80 border border-slate-700">
+        <div className="hidden md:flex items-center space-x-1.5 text-xs pl-2">
           <span className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`} />
           <span className="text-slate-400 font-mono">{connected ? t('navbar.liveSync') : t('navbar.offline')}</span>
         </div>
       </div>
 
-      {/* Right Controls: Language, Notifications, User Menu */}
-      <div className="flex items-center space-x-4">
+      {/* Right Controls: Theme, Language, Notifications, User Menu */}
+      <div className="flex items-center space-x-3">
+        {/* Theme Mode Switcher (Dark / Light) */}
+        <button
+          onClick={toggleTheme}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition"
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        >
+          {theme === 'dark' ? (
+            <>
+              <Sun className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">{i18n.language === 'km' ? 'ផ្ទៃភ្លឺ' : 'Light'}</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-3.5 h-3.5 text-blue-400" />
+              <span className="hidden sm:inline">{i18n.language === 'km' ? 'ផ្ទៃងងឹត' : 'Dark'}</span>
+            </>
+          )}
+        </button>
+
         {/* Language Switcher */}
         <button
           onClick={toggleLanguage}
@@ -172,7 +194,7 @@ export const Navbar: React.FC = () => {
             <p className="text-sm font-semibold text-slate-200 leading-tight">
               {i18n.language === 'km' && user?.khmerName ? user.khmerName : user?.fullName}
             </p>
-            <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-mono uppercase text-emerald-400 font-semibold">
               {user?.roles?.[0] || 'User'}
             </span>
           </div>

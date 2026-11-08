@@ -1,9 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Settings, Building, Globe, Shield, Database, Radio } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Settings, Building, Globe, Radio, Sun, Moon } from 'lucide-react';
 
 export const SystemSettings: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -68,6 +70,68 @@ export const SystemSettings: React.FC = () => {
           </div>
         </div>
 
+        {/* Appearance & Theme Mode */}
+        <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4 text-xs">
+          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
+            {theme === 'dark' ? (
+              <Moon className="w-4 h-4 text-emerald-400" />
+            ) : (
+              <Sun className="w-4 h-4 text-amber-500" />
+            )}
+            <h3 className="text-sm font-bold text-white">
+              {i18n.language === 'km' ? 'រចនាប័ទ្ម និងពន្លឺអេក្រង់ (Appearance & Theme)' : 'Appearance & Theme Mode'}
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button
+              type="button"
+              onClick={() => setTheme('dark')}
+              className={`p-4 rounded-xl border text-left transition flex items-center justify-between ${
+                theme === 'dark'
+                  ? 'border-emerald-500 ring-1 ring-emerald-500/40 bg-slate-900'
+                  : 'border-slate-800 bg-slate-900/40 hover:border-slate-700'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <Moon className="w-5 h-5 text-blue-400" />
+                <div>
+                  <span className="font-bold text-white block text-sm">
+                    {i18n.language === 'km' ? 'ផ្ទៃងងឹត (Dark Mode)' : 'Dark Mode'}
+                  </span>
+                  <span className="text-slate-400 text-[11px]">
+                    {i18n.language === 'km' ? 'កាត់បន្ថយពន្លឺចាំងភ្នែក សាកសមសម្រាប់ការប្រើប្រាស់យូរ' : 'High-contrast dark slate interface'}
+                  </span>
+                </div>
+              </div>
+              {theme === 'dark' && <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTheme('light')}
+              className={`p-4 rounded-xl border text-left transition flex items-center justify-between ${
+                theme === 'light'
+                  ? 'border-emerald-500 ring-1 ring-emerald-500/40 bg-slate-900'
+                  : 'border-slate-800 bg-slate-900/40 hover:border-slate-700'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <Sun className="w-5 h-5 text-amber-400" />
+                <div>
+                  <span className="font-bold text-white block text-sm">
+                    {i18n.language === 'km' ? 'ផ្ទៃភ្លឺ (Light Mode)' : 'Light Mode'}
+                  </span>
+                  <span className="text-slate-400 text-[11px]">
+                    {i18n.language === 'km' ? 'ផ្ទៃពណ៌សស្អាត ច្បាស់លាស់ដូចក្រដាសការិយាល័យ' : 'Clean crisp white daylight interface'}
+                  </span>
+                </div>
+              </div>
+              {theme === 'light' && <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />}
+            </button>
+          </div>
+        </div>
+
         {/* Integration Statuses */}
         <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4 text-xs">
           <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
@@ -81,7 +145,8 @@ export const SystemSettings: React.FC = () => {
                 <span className="font-semibold text-white block">PostgreSQL Database</span>
                 <span className="text-slate-500 text-[11px]">Primary transactional persistence layer</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400">
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 Connected & Synced
               </span>
             </div>
@@ -91,7 +156,8 @@ export const SystemSettings: React.FC = () => {
                 <span className="font-semibold text-white block">Socket.IO Real-Time Gateway</span>
                 <span className="text-slate-500 text-[11px]">Authorized WebSocket event dispatching</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400">
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 Active
               </span>
             </div>
@@ -101,7 +167,8 @@ export const SystemSettings: React.FC = () => {
                 <span className="font-semibold text-white block">Redis / BullMQ Notification Worker</span>
                 <span className="text-slate-500 text-[11px]">Background reminder queue</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">
+              <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                 Local Redis Standby
               </span>
             </div>
@@ -111,7 +178,8 @@ export const SystemSettings: React.FC = () => {
                 <span className="font-semibold text-white block">Telegram Bot Reminders</span>
                 <span className="text-slate-500 text-[11px]">Overdue installment push alerts</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-amber-400">
+              <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                 Unconfigured (Awaiting Token)
               </span>
             </div>

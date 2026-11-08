@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { AppLayout } from './components/layout/AppLayout';
 
 // Pages
@@ -31,10 +32,11 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 export const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <SocketProvider>
-          <Routes>
+    <ThemeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <SocketProvider>
+            <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
@@ -200,10 +202,11 @@ export const App: React.FC = () => {
               />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </SocketProvider>
-      </AuthProvider>
-    </BrowserRouter>
+            </Routes>
+          </SocketProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 

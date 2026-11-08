@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
-import { Sparkles, Shield, Lock, Mail, Globe, ArrowRight } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Shield, Lock, Mail, Globe, ArrowRight, Sun, Moon } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('admin@rfm.com');
@@ -80,9 +82,28 @@ export const Login: React.FC = () => {
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Top Language toggle */}
-      <div className="absolute top-6 right-6">
+      {/* Top Theme & Language toggle */}
+      <div className="absolute top-6 right-6 flex items-center space-x-2">
         <button
+          type="button"
+          onClick={toggleTheme}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white transition"
+        >
+          {theme === 'dark' ? (
+            <>
+              <Sun className="w-3.5 h-3.5 text-amber-400" />
+              <span>{i18n.language === 'km' ? 'ផ្ទៃភ្លឺ' : 'Light Mode'}</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-3.5 h-3.5 text-blue-400" />
+              <span>{i18n.language === 'km' ? 'ផ្ទៃងងឹត' : 'Dark Mode'}</span>
+            </>
+          )}
+        </button>
+
+        <button
+          type="button"
           onClick={toggleLang}
           className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white transition"
         >

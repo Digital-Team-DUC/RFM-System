@@ -234,12 +234,10 @@ export const BusinessPerformanceReport: React.FC = () => {
       </div>
 
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 border border-slate-800 shadow-xl print:hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl print:hidden">
         <div>
           <div className="flex items-center space-x-2.5">
-            <div className="p-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-              <BarChart3 className="w-6 h-6" />
-            </div>
+            <BarChart3 className="w-6 h-6 text-emerald-400 shrink-0" />
             <div>
               <h1 className="text-2xl font-black text-white tracking-tight">
                 {t('performance.title')}
@@ -307,9 +305,9 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 {t('performance.today')}
               </span>
-              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs bg-emerald-950/60 text-emerald-200 px-1.5 py-0.5 rounded border border-emerald-500/30">{benchmarks.today?.plotsSold || 0}</span>
-                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-semibold text-emerald-400 inline-flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">{benchmarks.today?.plotsSold || 0}</span>
+                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
 
@@ -351,9 +349,9 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <Calendar className="w-3.5 h-3.5" />
                 {t('performance.thisMonth')}
               </span>
-              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs bg-blue-950/60 text-blue-200 px-1.5 py-0.5 rounded border border-blue-500/30">{benchmarks.thisMonth?.plotsSold || 0}</span>
-                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-semibold text-blue-400 inline-flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">{benchmarks.thisMonth?.plotsSold || 0}</span>
+                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
 
@@ -395,9 +393,9 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <Clock className="w-3.5 h-3.5" />
                 {t('performance.thisYear')}
               </span>
-              <span className="text-xs font-sans font-medium px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 inline-flex items-center gap-1.5 shadow-sm">
-                <span className="font-mono font-bold text-xs bg-purple-950/60 text-purple-200 px-1.5 py-0.5 rounded border border-purple-500/30">{benchmarks.thisYear?.plotsSold || 0}</span>
-                <span className="tracking-wide">{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
+              <span className="text-xs font-sans font-semibold text-purple-400 inline-flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">{benchmarks.thisYear?.plotsSold || 0}</span>
+                <span>{i18n.language === 'km' ? 'ឡូត៍លក់បាន' : 'Plots Sold'}</span>
               </span>
             </div>
 
@@ -432,7 +430,7 @@ export const BusinessPerformanceReport: React.FC = () => {
                 <Home className="w-3.5 h-3.5" />
                 {t('performance.inventoryStatus')}
               </span>
-              <span className="text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 inline-flex items-center gap-1.5 shadow-sm">
+              <span className="text-xs font-sans font-semibold text-amber-400 inline-flex items-center gap-1.5">
                 <span className="font-mono font-bold text-xs">{inventory.availablePlots || 0} / {inventory.totalPlots || 0}</span>
                 <span>{i18n.language === 'km' ? 'ឡូត៍នៅសល់' : 'Available'}</span>
               </span>
@@ -533,7 +531,6 @@ export const BusinessPerformanceReport: React.FC = () => {
                     setStartDate(e.target.value);
                     setPeriod('custom');
                   }}
-                  style={{ colorScheme: 'dark', backgroundColor: '#0f172a', color: '#f8fafc' }}
                   className="w-full h-11 bg-slate-900 border border-slate-700/80 hover:border-slate-600 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 rounded-xl px-3.5 text-slate-100 font-mono text-xs focus:outline-none transition cursor-pointer shadow-inner"
                 />
               </div>
@@ -550,7 +547,6 @@ export const BusinessPerformanceReport: React.FC = () => {
                     setEndDate(e.target.value);
                     setPeriod('custom');
                   }}
-                  style={{ colorScheme: 'dark', backgroundColor: '#0f172a', color: '#f8fafc' }}
                   className="w-full h-11 bg-slate-900 border border-slate-700/80 hover:border-slate-600 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 rounded-xl px-3.5 text-slate-100 font-mono text-xs focus:outline-none transition cursor-pointer shadow-inner"
                 />
               </div>
@@ -587,10 +583,10 @@ export const BusinessPerformanceReport: React.FC = () => {
 
           <div className="flex items-center space-x-2">
             <span className="text-xs text-slate-400">{t('performance.profitMarginLabel')}</span>
-            <span className={`text-sm font-black font-mono px-2.5 py-1 rounded-xl border ${
+            <span className={`text-sm font-black font-mono ${
               (selectedRange.profitMargin || 0) >= 20
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                ? 'text-emerald-400'
+                : 'text-amber-400'
             }`}>
               {selectedRange.profitMargin || 0}%
             </span>
