@@ -60,13 +60,13 @@ export const FinancialStatements: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-800 pb-2 text-xs">
+      <div className="flex flex-wrap gap-6 border-b border-slate-800 text-xs">
         <button
           onClick={() => setActiveTab('pnl')}
-          className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+          className={`pb-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
             activeTab === 'pnl'
-              ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'border-emerald-500 text-emerald-400'
+              : 'border-transparent text-slate-400 hover:text-white'
           }`}
         >
           <TrendingUp className="w-3.5 h-3.5" />
@@ -75,10 +75,10 @@ export const FinancialStatements: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('balanceSheet')}
-          className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+          className={`pb-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
             activeTab === 'balanceSheet'
-              ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'border-emerald-500 text-emerald-400'
+              : 'border-transparent text-slate-400 hover:text-white'
           }`}
         >
           <Scale className="w-3.5 h-3.5" />
@@ -87,10 +87,10 @@ export const FinancialStatements: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('trialBalance')}
-          className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+          className={`pb-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
             activeTab === 'trialBalance'
-              ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'border-emerald-500 text-emerald-400'
+              : 'border-transparent text-slate-400 hover:text-white'
           }`}
         >
           <CheckCircle className="w-3.5 h-3.5" />
@@ -99,10 +99,10 @@ export const FinancialStatements: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('arAging')}
-          className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+          className={`pb-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
             activeTab === 'arAging'
-              ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
-              : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'border-emerald-500 text-emerald-400'
+              : 'border-transparent text-slate-400 hover:text-white'
           }`}
         >
           <Clock className="w-3.5 h-3.5" />

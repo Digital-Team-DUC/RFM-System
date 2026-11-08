@@ -78,7 +78,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner / Welcome */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 border border-slate-800 shadow-xl font-sans">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800 font-sans">
         <div>
           <h1 className="text-2xl font-black text-white tracking-tight">
             {t('dashboard.title')}
@@ -92,27 +92,27 @@ export const Dashboard: React.FC = () => {
         <div className="flex items-center gap-2 flex-wrap">
           <Link
             to="/reports/performance"
-            className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center space-x-1.5 shadow-lg shadow-emerald-500/20 transition"
+            className="px-3.5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center space-x-1.5 transition"
           >
             <BarChart3 className="w-4 h-4" />
             <span>{t('dashboard.executiveReport')}</span>
           </Link>
           <Link
             to="/master-plan"
-            className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition flex items-center space-x-1.5"
+            className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs border border-slate-700 transition flex items-center space-x-1.5"
           >
             <MapPin className="w-3.5 h-3.5 text-emerald-400" />
             <span>{t('nav.masterPlan')}</span>
           </Link>
           <Link
             to="/sales/bookings"
-            className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition"
+            className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs border border-slate-700 transition"
           >
             + {t('actions.reserveUnit')}
           </Link>
           <Link
             to="/payments"
-            className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition"
+            className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs border border-slate-700 transition"
           >
             {t('actions.recordPayment')}
           </Link>
@@ -141,7 +141,7 @@ export const Dashboard: React.FC = () => {
           {/* Today Card */}
           <Link
             to="/reports/performance?period=today"
-            className="p-5 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition group relative overflow-hidden shadow-lg"
+            className="glass-panel p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition group relative overflow-hidden"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5 font-sans">
@@ -180,7 +180,7 @@ export const Dashboard: React.FC = () => {
           {/* This Month Card */}
           <Link
             to="/reports/performance?period=this_month"
-            className="p-5 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/50 transition group relative overflow-hidden shadow-lg"
+            className="glass-panel p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition group relative overflow-hidden"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5 font-sans">
@@ -219,7 +219,7 @@ export const Dashboard: React.FC = () => {
           {/* This Year Card */}
           <Link
             to="/reports/performance?period=this_year"
-            className="p-5 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-purple-500/50 transition group relative overflow-hidden shadow-lg"
+            className="glass-panel p-5 rounded-2xl border border-slate-800 hover:border-purple-500/50 transition group relative overflow-hidden"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5 font-sans">
@@ -258,7 +258,7 @@ export const Dashboard: React.FC = () => {
           {/* Remaining Stock Card */}
           <Link
             to="/properties"
-            className="p-5 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 transition group relative overflow-hidden shadow-lg"
+            className="glass-panel p-5 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition group relative overflow-hidden"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5 font-sans">
@@ -285,8 +285,10 @@ export const Dashboard: React.FC = () => {
               </div>
               <div className="pt-2 border-t border-slate-800 flex justify-between items-baseline text-xs">
                 <span className="text-slate-400">{i18n.language === 'km' ? 'ឡូត៍នៅទំនេរ' : 'Remaining Plots'}:</span>
-                <span className="font-mono font-bold text-white">
-                  {inventory.availablePlots || 0} {i18n.language === 'km' ? 'ឡូត៍' : 'Units'} ({inventory.remainingPercentage || 0}%)
+                <span className="font-bold text-white inline-flex items-baseline gap-1">
+                  <span className="font-mono">{inventory.availablePlots || 0}</span>
+                  <span className="font-sans">{i18n.language === 'km' ? 'ឡូត៍' : 'Units'}</span>
+                  <span className="font-mono">({inventory.remainingPercentage || 0}%)</span>
                 </span>
               </div>
             </div>
@@ -309,7 +311,7 @@ export const Dashboard: React.FC = () => {
           </div>
           <div className="text-[11px] text-emerald-400 mt-1 flex items-center font-medium">
             <CheckCircle className="w-3 h-3 mr-1" />
-            <span>Reconciled Contract Value</span>
+            <span>{i18n.language === 'km' ? 'តម្លៃកិច្ចសន្យាលក់បានផ្ទៀងផ្ទាត់' : 'Reconciled Contract Value'}</span>
           </div>
         </div>
 
@@ -325,7 +327,7 @@ export const Dashboard: React.FC = () => {
             {formatCurrency(kpis.totalCashCollected, Currency.USD)}
           </div>
           <div className="text-[11px] text-slate-400 mt-1">
-            Deposits & Verified Installments
+            {i18n.language === 'km' ? 'ប្រាក់កក់ និងការបង់រំលស់ជាក់ស្តែង' : 'Deposits & Verified Installments'}
           </div>
         </div>
 
@@ -341,7 +343,7 @@ export const Dashboard: React.FC = () => {
             {formatCurrency(kpis.totalOutstandingAr, Currency.USD)}
           </div>
           <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
-            <span>Remaining Contract Receivables</span>
+            <span>{i18n.language === 'km' ? 'បំណុលកិច្ចសន្យានៅសល់ត្រូវប្រមូល' : 'Remaining Contract Receivables'}</span>
             {kpis.overdueCount > 0 && (
               <span className="text-amber-400 font-bold text-[10px]">
                 {kpis.overdueCount} Overdue
@@ -362,7 +364,7 @@ export const Dashboard: React.FC = () => {
             {formatCurrency(kpis.totalBankBalance, Currency.USD)}
           </div>
           <div className="text-[11px] text-slate-400 mt-1">
-            ABA, Canadia & Vault Accounts
+            {i18n.language === 'km' ? 'គណនីធនាគារ ABA, កាណាឌីយ៉ា និងបេឡា' : 'ABA, Canadia & Vault Accounts'}
           </div>
         </div>
       </div>

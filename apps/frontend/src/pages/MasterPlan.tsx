@@ -415,15 +415,15 @@ export const MasterPlan: React.FC = () => {
               <button
                 key={ast.id}
                 onClick={() => setActiveAssetId(ast.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center space-x-2 border ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center space-x-2 border ${
                   isActive
-                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 shadow-sm'
-                    : 'bg-slate-900/60 hover:bg-slate-800 text-slate-400 border-slate-800'
+                    ? 'border-emerald-500 text-emerald-400 font-bold'
+                    : 'border-slate-800 text-slate-400 hover:text-white'
                 }`}
               >
                 <span>{ast.title}</span>
-                <span className="text-[10px] bg-slate-800 px-1.5 py-0.2 rounded-full font-mono text-slate-300">
-                  {ast._count?.shapes || (ast.shapes ? ast.shapes.length : 0)}
+                <span className="text-[10px] font-mono text-slate-400">
+                  ({ast._count?.shapes || (ast.shapes ? ast.shapes.length : 0)})
                 </span>
               </button>
             );
@@ -611,10 +611,10 @@ export const MasterPlan: React.FC = () => {
       <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none text-xs">
         <button
           onClick={() => setFilterStatus('ALL')}
-          className={`px-3 py-1.5 rounded-xl font-semibold transition ${
+          className={`px-3 py-1.5 rounded-lg font-semibold transition border ${
             filterStatus === 'ALL'
-              ? 'bg-slate-700 text-white shadow'
-              : 'bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800'
+              ? 'border-emerald-500 text-emerald-400 font-bold'
+              : 'border-slate-800 text-slate-400 hover:text-white'
           }`}
         >
           {t('masterPlan.allPlots')} ({shapes.length})
@@ -622,54 +622,54 @@ export const MasterPlan: React.FC = () => {
 
         <button
           onClick={() => setFilterStatus('AVAILABLE')}
-          className={`px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1.5 ${
+          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
             filterStatus === 'AVAILABLE'
-              ? 'bg-emerald-500 text-slate-950 font-bold shadow-lg shadow-emerald-500/20'
-              : 'bg-slate-900/60 text-emerald-400 hover:bg-emerald-500/10 border border-slate-800'
+              ? 'border-emerald-500 text-emerald-400 font-bold'
+              : 'border-slate-800 text-emerald-400 hover:border-emerald-500/50'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400" />
           <span>{t('masterPlan.available')}</span>
-          <span className="text-[10px] font-mono px-1 rounded bg-black/20">({availableCount})</span>
+          <span className="text-[10px] font-mono">({availableCount})</span>
         </button>
 
         <button
           onClick={() => setFilterStatus('RESERVED')}
-          className={`px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1.5 ${
+          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
             filterStatus === 'RESERVED'
-              ? 'bg-amber-500 text-slate-950 font-bold shadow-lg shadow-amber-500/20'
-              : 'bg-slate-900/60 text-amber-400 hover:bg-amber-500/10 border border-slate-800'
+              ? 'border-amber-500 text-amber-400 font-bold'
+              : 'border-slate-800 text-amber-400 hover:border-amber-500/50'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-amber-400" />
           <span>{t('masterPlan.reserved')}</span>
-          <span className="text-[10px] font-mono px-1 rounded bg-black/20">({reservedCount})</span>
+          <span className="text-[10px] font-mono">({reservedCount})</span>
         </button>
 
         <button
           onClick={() => setFilterStatus('INSTALLMENT')}
-          className={`px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1.5 ${
+          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
             filterStatus === 'INSTALLMENT'
-              ? 'bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20'
-              : 'bg-slate-900/60 text-blue-400 hover:bg-blue-500/10 border border-slate-800'
+              ? 'border-blue-500 text-blue-400 font-bold'
+              : 'border-slate-800 text-blue-400 hover:border-blue-500/50'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-blue-400" />
           <span>{t('masterPlan.installment')}</span>
-          <span className="text-[10px] font-mono px-1 rounded bg-black/20">({installmentCount})</span>
+          <span className="text-[10px] font-mono">({installmentCount})</span>
         </button>
 
         <button
           onClick={() => setFilterStatus('SOLD')}
-          className={`px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1.5 ${
+          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
             filterStatus === 'SOLD'
-              ? 'bg-rose-500 text-white font-bold shadow-lg shadow-rose-500/20'
-              : 'bg-slate-900/60 text-rose-400 hover:bg-rose-500/10 border border-slate-800'
+              ? 'border-rose-500 text-rose-400 font-bold'
+              : 'border-slate-800 text-rose-400 hover:border-rose-500/50'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-rose-400" />
           <span>{t('masterPlan.sold')}</span>
-          <span className="text-[10px] font-mono px-1 rounded bg-black/20">({soldCount})</span>
+          <span className="text-[10px] font-mono">({soldCount})</span>
         </button>
       </div>
 

@@ -234,7 +234,7 @@ export const BusinessPerformanceReport: React.FC = () => {
       </div>
 
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl print:hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800 print:hidden">
         <div>
           <div className="flex items-center space-x-2.5">
             <BarChart3 className="w-6 h-6 text-emerald-400 shrink-0" />
@@ -482,10 +482,10 @@ export const BusinessPerformanceReport: React.FC = () => {
               <button
                 key={pItem.id}
                 onClick={() => handleSelectPreset(pItem.id)}
-                className={`px-3 py-1.5 rounded-xl font-bold transition ${
+                className={`px-3 py-1.5 rounded-lg font-bold transition ${
                   period === pItem.id
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700/60'
+                    ? 'border border-emerald-500 text-emerald-400'
+                    : 'text-slate-400 hover:text-white border border-transparent'
                 }`}
               >
                 {pItem.label}
@@ -803,13 +803,13 @@ export const BusinessPerformanceReport: React.FC = () => {
           </h3>
         </div>
         {/* Tab Headers */}
-        <div className="flex border-b border-slate-800 bg-slate-900/60 p-2 gap-2 text-xs overflow-x-auto print:hidden">
+        <div className="flex border-b border-slate-800 px-4 gap-6 text-xs overflow-x-auto print:hidden">
           <button
             onClick={() => setActiveTab('daily')}
-            className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+            className={`py-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
               activeTab === 'daily'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'border-emerald-500 text-emerald-400'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Calendar className="w-3.5 h-3.5" />
@@ -818,10 +818,10 @@ export const BusinessPerformanceReport: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('soldPlots')}
-            className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+            className={`py-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
               activeTab === 'soldPlots'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'border-emerald-500 text-emerald-400'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Home className="w-3.5 h-3.5" />
@@ -830,10 +830,10 @@ export const BusinessPerformanceReport: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('expenses')}
-            className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+            className={`py-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
               activeTab === 'expenses'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'border-emerald-500 text-emerald-400'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Receipt className="w-3.5 h-3.5" />
@@ -842,10 +842,10 @@ export const BusinessPerformanceReport: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('projects')}
-            className={`px-4 py-2 rounded-xl font-bold transition flex items-center space-x-1.5 ${
+            className={`py-3 border-b-2 font-bold transition flex items-center space-x-1.5 ${
               activeTab === 'projects'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'border-emerald-500 text-emerald-400'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Building className="w-3.5 h-3.5" />

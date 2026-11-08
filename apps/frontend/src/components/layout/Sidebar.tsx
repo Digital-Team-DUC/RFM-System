@@ -92,8 +92,8 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-950 flex flex-col shrink-0 h-screen sticky top-0 overflow-y-auto">
       {/* Brand Header */}
-      <div className="h-16 px-5 border-b border-slate-800 flex items-center space-x-3 bg-slate-900/40">
-        <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-lg shadow-emerald-500/10 border border-slate-700/40 shrink-0 overflow-hidden">
+      <div className="h-16 px-5 border-b border-slate-800 flex items-center space-x-3">
+        <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 overflow-hidden">
           <img src="/rfm-logo.png" alt="RFM System Logo" className="w-full h-full object-contain" />
         </div>
         <div className="min-w-0">
@@ -122,10 +122,10 @@ export const Sidebar: React.FC = () => {
                     to={item.to}
                     end={item.to === '/'}
                     className={({ isActive }) =>
-                      `flex items-center px-3 py-2 rounded-lg text-xs font-medium transition ${
+                      `flex items-center py-2 text-xs transition ${
                         isActive
-                          ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/80'
+                          ? 'pl-3 border-l-2 border-emerald-500 text-emerald-400 font-bold'
+                          : 'pl-3.5 text-slate-400 hover:text-emerald-400 font-medium'
                       }`
                     }
                   >
