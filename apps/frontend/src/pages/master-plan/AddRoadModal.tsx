@@ -69,9 +69,7 @@ export const AddRoadModal: React.FC<AddRoadModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/60 font-sans">
           <div className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-amber-400">
-              <Compass className="w-4 h-4" />
-            </div>
+            <Compass className="w-5 h-5 text-amber-400 shrink-0" />
             <div>
               <h3 className="text-sm font-bold text-white">{t('masterPlan.addRoadTitle')}</h3>
               <p className="text-[11px] text-slate-400">{t('masterPlan.addRoadDesc')}</p>
