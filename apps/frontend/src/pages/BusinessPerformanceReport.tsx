@@ -482,10 +482,10 @@ export const BusinessPerformanceReport: React.FC = () => {
               <button
                 key={pItem.id}
                 onClick={() => handleSelectPreset(pItem.id)}
-                className={`px-3 py-1.5 rounded-lg font-bold transition ${
+                className={`px-2 py-1 border-b-2 transition ${
                   period === pItem.id
-                    ? 'border border-emerald-500 text-emerald-400'
-                    : 'text-slate-400 hover:text-white border border-transparent'
+                    ? 'border-emerald-500 text-emerald-400 font-bold'
+                    : 'border-transparent text-slate-400 hover:text-white font-medium'
                 }`}
               >
                 {pItem.label}

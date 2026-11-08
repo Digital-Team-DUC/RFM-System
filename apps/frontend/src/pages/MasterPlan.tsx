@@ -402,10 +402,10 @@ export const MasterPlan: React.FC = () => {
       ) : (
         <>
         {/* Phase / Sheet Switcher Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-2 font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800 font-sans">
         {/* Phase Tabs */}
-        <div className="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-          <span className="text-xs font-bold text-slate-400 flex items-center space-x-1 shrink-0 mr-1">
+        <div className="flex items-center space-x-5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+          <span className="text-xs font-bold text-slate-400 flex items-center space-x-1.5 shrink-0">
             <Layers className="w-3.5 h-3.5 text-emerald-400" />
             <span>{t('masterPlan.phasesAndSheets')}</span>
           </span>
@@ -415,10 +415,10 @@ export const MasterPlan: React.FC = () => {
               <button
                 key={ast.id}
                 onClick={() => setActiveAssetId(ast.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center space-x-2 border ${
+                className={`py-1 border-b-2 text-xs whitespace-nowrap transition flex items-center space-x-1.5 ${
                   isActive
                     ? 'border-emerald-500 text-emerald-400 font-bold'
-                    : 'border-slate-800 text-slate-400 hover:text-white'
+                    : 'border-transparent text-slate-400 hover:text-white font-medium'
                 }`}
               >
                 <span>{ast.title}</span>
@@ -431,7 +431,7 @@ export const MasterPlan: React.FC = () => {
 
           <button
             onClick={() => setShowAddPhaseModal(true)}
-            className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition flex items-center space-x-1 text-xs shrink-0 px-2.5 font-semibold"
+            className="text-emerald-400 hover:text-emerald-300 transition flex items-center space-x-1 text-xs shrink-0 font-semibold"
             title={t('masterPlan.addPhase')}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -440,12 +440,12 @@ export const MasterPlan: React.FC = () => {
         </div>
 
         {/* Master Plan Customization Actions */}
-        <div className="flex items-center space-x-2 shrink-0 flex-wrap">
+        <div className="flex items-center space-x-4 shrink-0 flex-wrap">
           {/* Add Road Button */}
           {activeAsset && (
             <button
               onClick={() => setShowRoadModal(true)}
-              className="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-semibold transition flex items-center space-x-1.5"
+              className="text-amber-400 hover:text-amber-300 text-xs font-semibold transition flex items-center space-x-1.5"
             >
               <Compass className="w-3.5 h-3.5" />
               <span>{t('masterPlan.addRoad')}</span>
@@ -456,7 +456,7 @@ export const MasterPlan: React.FC = () => {
           {activeAsset && (
             <button
               onClick={() => setShowAmenityModal(true)}
-              className="px-3 py-1.5 rounded-xl bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 border border-teal-500/30 text-xs font-semibold transition flex items-center space-x-1.5"
+              className="text-teal-400 hover:text-teal-300 text-xs font-semibold transition flex items-center space-x-1.5"
             >
               <Trees className="w-3.5 h-3.5" />
               <span>{t('masterPlan.addAmenity')}</span>
@@ -466,7 +466,7 @@ export const MasterPlan: React.FC = () => {
           {/* Auto-Layout Plots */}
           <button
             onClick={handleGenerateDemo}
-            className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold transition flex items-center space-x-1.5"
+            className="text-emerald-400 hover:text-emerald-300 text-xs font-semibold transition flex items-center space-x-1.5"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>{t('masterPlan.generateDemo')}</span>
@@ -475,7 +475,7 @@ export const MasterPlan: React.FC = () => {
           {/* Upload SVG Blueprint */}
           <button
             onClick={() => setShowUploadModal(true)}
-            className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition flex items-center space-x-1.5"
+            className="text-slate-300 hover:text-emerald-400 text-xs font-semibold transition flex items-center space-x-1.5"
           >
             <Upload className="w-3.5 h-3.5 text-emerald-400" />
             <span>{t('masterPlan.uploadSvg')}</span>
@@ -485,7 +485,7 @@ export const MasterPlan: React.FC = () => {
           {assets.length > 1 && (
             <button
               onClick={handleDeletePhase}
-              className="p-1.5 rounded-xl bg-slate-900 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-slate-800 transition"
+              className="p-1 text-slate-400 hover:text-rose-400 transition"
               title={t('masterPlan.deletePhase')}
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -608,13 +608,13 @@ export const MasterPlan: React.FC = () => {
       )}
 
       {/* Filter Status Selector */}
-      <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none text-xs">
+      <div className="flex items-center space-x-6 overflow-x-auto pb-1 scrollbar-none text-xs">
         <button
           onClick={() => setFilterStatus('ALL')}
-          className={`px-3 py-1.5 rounded-lg font-semibold transition border ${
+          className={`py-1.5 border-b-2 transition ${
             filterStatus === 'ALL'
               ? 'border-emerald-500 text-emerald-400 font-bold'
-              : 'border-slate-800 text-slate-400 hover:text-white'
+              : 'border-transparent text-slate-400 hover:text-white font-medium'
           }`}
         >
           {t('masterPlan.allPlots')} ({shapes.length})
@@ -622,10 +622,10 @@ export const MasterPlan: React.FC = () => {
 
         <button
           onClick={() => setFilterStatus('AVAILABLE')}
-          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
+          className={`py-1.5 border-b-2 transition flex items-center space-x-1.5 ${
             filterStatus === 'AVAILABLE'
               ? 'border-emerald-500 text-emerald-400 font-bold'
-              : 'border-slate-800 text-emerald-400 hover:border-emerald-500/50'
+              : 'border-transparent text-emerald-400/80 hover:text-emerald-400 font-medium'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -635,10 +635,10 @@ export const MasterPlan: React.FC = () => {
 
         <button
           onClick={() => setFilterStatus('RESERVED')}
-          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
+          className={`py-1.5 border-b-2 transition flex items-center space-x-1.5 ${
             filterStatus === 'RESERVED'
               ? 'border-amber-500 text-amber-400 font-bold'
-              : 'border-slate-800 text-amber-400 hover:border-amber-500/50'
+              : 'border-transparent text-amber-400/80 hover:text-amber-400 font-medium'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-amber-400" />
@@ -648,10 +648,10 @@ export const MasterPlan: React.FC = () => {
 
         <button
           onClick={() => setFilterStatus('INSTALLMENT')}
-          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
+          className={`py-1.5 border-b-2 transition flex items-center space-x-1.5 ${
             filterStatus === 'INSTALLMENT'
               ? 'border-blue-500 text-blue-400 font-bold'
-              : 'border-slate-800 text-blue-400 hover:border-blue-500/50'
+              : 'border-transparent text-blue-400/80 hover:text-blue-400 font-medium'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-blue-400" />
@@ -661,10 +661,10 @@ export const MasterPlan: React.FC = () => {
 
         <button
           onClick={() => setFilterStatus('SOLD')}
-          className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 border ${
+          className={`py-1.5 border-b-2 transition flex items-center space-x-1.5 ${
             filterStatus === 'SOLD'
               ? 'border-rose-500 text-rose-400 font-bold'
-              : 'border-slate-800 text-rose-400 hover:border-rose-500/50'
+              : 'border-transparent text-rose-400/80 hover:text-rose-400 font-medium'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-rose-400" />

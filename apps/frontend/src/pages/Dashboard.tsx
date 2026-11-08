@@ -302,7 +302,7 @@ export const Dashboard: React.FC = () => {
         <div className="glass-panel p-5 rounded-2xl relative overflow-hidden group">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              {t('kpi.contractSales')}
+              {i18n.language === 'km' ? 'ចំណូលកិច្ចសន្យាលក់សរុប' : 'Total Contract Sales'}
             </span>
             <TrendingUp className="w-5 h-5 text-emerald-400" />
           </div>
@@ -319,7 +319,7 @@ export const Dashboard: React.FC = () => {
         <div className="glass-panel p-5 rounded-2xl relative overflow-hidden group">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              {t('kpi.cashCollected')}
+              {i18n.language === 'km' ? 'សាច់ប្រាក់ប្រមូលបានជាក់ស្តែង' : 'Cash Collected'}
             </span>
             <DollarSign className="w-5 h-5 text-teal-400" />
           </div>
@@ -335,7 +335,7 @@ export const Dashboard: React.FC = () => {
         <div className="glass-panel p-5 rounded-2xl relative overflow-hidden group">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              {t('kpi.outstandingAr')}
+              {i18n.language === 'km' ? 'បំណុលអតិថិជននៅសល់ (AR)' : 'Receivables Outstanding (AR)'}
             </span>
             <CreditCard className="w-5 h-5 text-blue-400" />
           </div>
@@ -356,7 +356,7 @@ export const Dashboard: React.FC = () => {
         <div className="glass-panel p-5 rounded-2xl relative overflow-hidden group">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              {t('kpi.bankBalance')}
+              {i18n.language === 'km' ? 'សមតុល្យសាច់ប្រាក់ធនាគារ' : 'Bank & Cash Balance'}
             </span>
             <Wallet className="w-5 h-5 text-purple-400" />
           </div>
@@ -375,7 +375,7 @@ export const Dashboard: React.FC = () => {
           <Building2 className="w-5 h-5 text-emerald-400 shrink-0" />
           <div className="font-sans">
             <div className="text-lg font-bold text-white font-mono">{kpis.totalProjects}</div>
-            <div className="text-[11px] text-slate-400">{t('kpi.totalProjects')}</div>
+            <div className="text-[11px] text-slate-400">{i18n.language === 'km' ? 'គម្រោងសរុប' : 'Active Projects'}</div>
           </div>
         </div>
 

@@ -97,41 +97,45 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Right Controls: Theme, Language, Notifications, User Menu */}
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-4">
         {/* Theme Mode Switcher (Dark / Light) */}
         <button
           onClick={toggleTheme}
-          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition"
+          className="flex items-center space-x-1.5 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition"
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
           {theme === 'dark' ? (
             <>
-              <Sun className="w-3.5 h-3.5 text-amber-400" />
+              <Sun className="w-4 h-4 text-amber-400" />
               <span className="hidden sm:inline">{i18n.language === 'km' ? 'ផ្ទៃភ្លឺ' : 'Light'}</span>
             </>
           ) : (
             <>
-              <Moon className="w-3.5 h-3.5 text-blue-400" />
+              <Moon className="w-4 h-4 text-blue-400" />
               <span className="hidden sm:inline">{i18n.language === 'km' ? 'ផ្ទៃងងឹត' : 'Dark'}</span>
             </>
           )}
         </button>
 
+        <span className="h-4 w-px bg-slate-800" />
+
         {/* Language Switcher */}
         <button
           onClick={toggleLanguage}
-          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition"
+          className="flex items-center space-x-1.5 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition"
           title="Switch Language"
         >
-          <Globe className="w-3.5 h-3.5 text-emerald-400" />
+          <Globe className="w-4 h-4 text-emerald-400" />
           <span>{i18n.language === 'en' ? 'ភាសាខ្មែរ (KM)' : 'English (EN)'}</span>
         </button>
+
+        <span className="h-4 w-px bg-slate-800" />
 
         {/* Notifications Popover */}
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 relative transition"
+            className="p-1 text-slate-300 hover:text-emerald-400 relative transition flex items-center justify-center"
           >
             <Bell className="w-4 h-4" />
             {unreadCount > 0 && (
@@ -200,7 +204,7 @@ export const Navbar: React.FC = () => {
           </div>
           <button
             onClick={logout}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-400 text-slate-400 border border-slate-700 transition"
+            className="p-1 text-slate-400 hover:text-rose-400 transition"
             title={t('actions.logout')}
           >
             <LogOut className="w-4 h-4" />

@@ -63,7 +63,7 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Clean Minimalist Status & Code Badges (Removes cluttering pill/box backgrounds) */
+/* Clean Minimalist Status, Code Badges & Pastel Buttons (Removes cluttering pill/box backgrounds & borders) */
 span[class*="bg-emerald-500/"],
 span[class*="bg-blue-500/"],
 span[class*="bg-amber-500/"],
@@ -72,12 +72,15 @@ span[class*="bg-rose-500/"],
 span[class*="bg-teal-500/"],
 span[class*="bg-emerald-950/"],
 span[class*="bg-blue-950/"],
-span[class*="bg-purple-950/"] {
+span[class*="bg-purple-950/"],
+button[class*="bg-emerald-500/"],
+button[class*="bg-amber-500/"],
+button[class*="bg-teal-500/"],
+button[class*="bg-rose-500/"],
+a[class*="bg-emerald-500/"] {
   background-color: transparent !important;
   border-color: transparent !important;
   box-shadow: none !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 }
 
 /* Dark mode form controls & date inputs across all browsers */
