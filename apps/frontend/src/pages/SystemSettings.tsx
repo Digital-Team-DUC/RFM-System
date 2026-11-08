@@ -27,7 +27,7 @@ export const SystemSettings: React.FC = () => {
             <h3 className="text-sm font-bold text-white">Company Identity & Registration</h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <span className="text-slate-500 block">Organization Name</span>
               <span className="font-semibold text-white">Phnom Penh Land & Asset Development Co., Ltd.</span>
@@ -54,7 +54,7 @@ export const SystemSettings: React.FC = () => {
             <h3 className="text-sm font-bold text-white">Currencies & Dual Exchange Rate</h3>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <span className="text-slate-500 block">Primary Functional Currency</span>
               <span className="font-mono font-bold text-emerald-400 text-sm">USD ($)</span>
@@ -140,7 +140,7 @@ export const SystemSettings: React.FC = () => {
           </div>
 
           <div className="divide-y divide-slate-800/60">
-            <div className="py-2.5 flex justify-between items-center">
+            <div className="py-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
               <div>
                 <span className="font-semibold text-white block">PostgreSQL Database</span>
                 <span className="text-slate-500 text-[11px]">Primary transactional persistence layer</span>
@@ -151,7 +151,7 @@ export const SystemSettings: React.FC = () => {
               </span>
             </div>
 
-            <div className="py-2.5 flex justify-between items-center">
+            <div className="py-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
               <div>
                 <span className="font-semibold text-white block">Socket.IO Real-Time Gateway</span>
                 <span className="text-slate-500 text-[11px]">Authorized WebSocket event dispatching</span>
@@ -162,7 +162,7 @@ export const SystemSettings: React.FC = () => {
               </span>
             </div>
 
-            <div className="py-2.5 flex justify-between items-center">
+            <div className="py-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
               <div>
                 <span className="font-semibold text-white block">Redis / BullMQ Notification Worker</span>
                 <span className="text-slate-500 text-[11px]">Background reminder queue</span>
@@ -173,7 +173,7 @@ export const SystemSettings: React.FC = () => {
               </span>
             </div>
 
-            <div className="py-2.5 flex justify-between items-center">
+            <div className="py-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
               <div>
                 <span className="font-semibold text-white block">Telegram Bot Reminders</span>
                 <span className="text-slate-500 text-[11px]">Overdue installment push alerts</span>

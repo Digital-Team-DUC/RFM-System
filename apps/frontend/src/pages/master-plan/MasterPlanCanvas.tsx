@@ -122,6 +122,29 @@ export const MasterPlanCanvas: React.FC<MasterPlanCanvasProps> = ({
     setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
   };
 
+  // Touch handlers for Mobile & Tablet pan/drag
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      setIsPanning(true);
+      setDragStart({ x: touch.clientX - pan.x, y: touch.clientY - pan.y });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isPanning && e.touches.length === 1) {
+      const touch = e.touches[0];
+      setPan({
+        x: touch.clientX - dragStart.x,
+        y: touch.clientY - dragStart.y,
+      });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsPanning(false);
+  };
+
   // Mouse Move handler
   const handleMouseMove = (e: React.MouseEvent) => {
     const coords = getSvgCoordinates(e.clientX, e.clientY);
@@ -304,12 +327,15 @@ export const MasterPlanCanvas: React.FC<MasterPlanCanvasProps> = ({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       onMouseLeave={() => {
         setIsPanning(false);
         setHoveredShape(null);
       }}
       onDoubleClick={handleDoubleClick}
-      className={`relative w-full h-[640px] rounded-3xl glass-panel border border-slate-800 bg-slate-950 overflow-hidden select-none transition-colors ${
+      className={`relative w-full h-[400px] sm:h-[520px] lg:h-[640px] rounded-2xl sm:rounded-3xl glass-panel border border-slate-800 bg-slate-950 overflow-hidden select-none touch-none transition-colors ${
         isPanning ? 'cursor-grabbing' : editorMode ? 'cursor-crosshair' : 'cursor-grab'
       }`}
     >

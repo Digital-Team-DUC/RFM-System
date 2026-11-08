@@ -21,7 +21,7 @@ import {
   TrendingUp,
   ShieldAlert,
   Settings,
-  Sparkles,
+  X,
 } from 'lucide-react';
 
 interface NavItem {
@@ -36,7 +36,12 @@ interface NavSection {
   items: NavItem[];
 }
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  onCloseMobile?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onCloseMobile }) => {
   const { t } = useTranslation();
   const { hasPermission } = useAuth();
 
@@ -89,25 +94,37 @@ export const Sidebar: React.FC = () => {
     }))
     .filter((section) => section.items.length > 0);
 
-  return (
-    <aside className="w-64 border-r border-slate-800 bg-slate-950 flex flex-col shrink-0 h-screen sticky top-0 overflow-y-auto">
+  const renderSidebarContent = (isMobile: boolean) => (
+    <>
       {/* Brand Header */}
-      <div className="h-16 px-5 border-b border-slate-800 flex items-center space-x-3">
-        <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 overflow-hidden">
-          <img src="/rfm-logo.png" alt="RFM System Logo" className="w-full h-full object-contain" />
+      <div className="h-14 sm:h-16 px-4 sm:px-5 border-b border-slate-800 flex items-center justify-between shrink-0">
+        <div className="flex items-center space-x-3 min-w-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 overflow-hidden">
+            <img src="/rfm-logo.png" alt="RFM System Logo" className="w-full h-full object-contain" />
+          </div>
+          <div className="min-w-0">
+            <span className="font-extrabold text-sm sm:text-base tracking-tight text-white block truncate leading-tight">
+              RFM SYSTEM
+            </span>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block">
+              Enterprise ERP
+            </span>
+          </div>
         </div>
-        <div className="min-w-0">
-          <span className="font-extrabold text-base tracking-tight text-white block truncate leading-tight">
-            RFM SYSTEM
-          </span>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block">
-            Enterprise ERP
-          </span>
-        </div>
+        {isMobile && onCloseMobile && (
+          <button
+            type="button"
+            onClick={onCloseMobile}
+            className="p-1.5 text-slate-400 hover:text-white transition lg:hidden"
+            aria-label="Close navigation menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       {/* Navigation Sections */}
-      <div className="flex-1 px-3 py-4 space-y-6">
+      <div className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
         {visibleSections.map((section, idx) => (
           <div key={idx}>
             <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">
@@ -121,8 +138,11 @@ export const Sidebar: React.FC = () => {
                     key={item.to}
                     to={item.to}
                     end={item.to === '/'}
+                    onClick={() => {
+                      if (isMobile && onCloseMobile) onCloseMobile();
+                    }}
                     className={({ isActive }) =>
-                      `flex items-center py-2 text-xs transition ${
+                      `flex items-center py-2.5 sm:py-2 text-xs transition ${
                         isActive
                           ? 'pl-3 border-l-2 border-emerald-500 text-emerald-400 font-bold'
                           : 'pl-3.5 text-slate-400 hover:text-emerald-400 font-medium'
@@ -140,9 +160,37 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer Info */}
-      <div className="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center font-mono">
+      <div className="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center font-mono shrink-0">
         v1.0.0 • Asia/Phnom_Penh (USD/KHR)
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Sticky Sidebar (lg and up) */}
+      <aside className="hidden lg:flex w-64 border-r border-slate-800 bg-slate-950 flex-col shrink-0 h-screen sticky top-0 overflow-y-auto">
+        {renderSidebarContent(false)}
+      </aside>
+
+      {/* Mobile & Tablet Slide-Over Drawer (< lg) */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-50 lg:hidden flex"
+          role="dialog"
+          aria-modal="true"
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 transition-opacity"
+            onClick={onCloseMobile}
+          />
+          {/* Slide-out Panel */}
+          <aside className="relative z-10 w-72 max-w-[82vw] border-r border-slate-800 bg-slate-950 flex flex-col h-full shadow-2xl">
+            {renderSidebarContent(true)}
+          </aside>
+        </div>
+      )}
+    </>
   );
 };

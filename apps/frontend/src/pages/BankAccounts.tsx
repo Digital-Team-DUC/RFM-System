@@ -54,7 +54,7 @@ export const BankAccounts: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
           <h1 className="text-xl font-black text-white flex items-center space-x-2">
             <Wallet className="w-5 h-5 text-emerald-400" />

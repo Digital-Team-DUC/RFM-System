@@ -676,7 +676,7 @@ export const MasterPlan: React.FC = () => {
       {/* Main Interactive Canvas Container */}
       <div className="relative">
         {loading ? (
-          <div className="w-full h-[640px] rounded-3xl glass-panel border border-slate-800 bg-slate-950 flex flex-col items-center justify-center space-y-3 text-emerald-400">
+          <div className="w-full h-[400px] sm:h-[520px] lg:h-[640px] rounded-2xl sm:rounded-3xl glass-panel border border-slate-800 bg-slate-950 flex flex-col items-center justify-center space-y-3 text-emerald-400">
             <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
             <span className="text-xs font-medium">Loading interactive site plan geometry...</span>
           </div>
@@ -692,7 +692,7 @@ export const MasterPlan: React.FC = () => {
             searchQuery={searchQuery}
           />
         ) : (
-          <div className="w-full h-[640px] rounded-3xl glass-panel border border-slate-800 bg-slate-950 flex flex-col items-center justify-center text-slate-500 space-y-3">
+          <div className="w-full h-[400px] sm:h-[520px] lg:h-[640px] rounded-2xl sm:rounded-3xl glass-panel border border-slate-800 bg-slate-950 flex flex-col items-center justify-center text-slate-500 space-y-3">
             <Building className="w-12 h-12 opacity-50" />
             <p className="text-sm font-semibold">No master plan asset found for this project</p>
             <button
@@ -706,7 +706,7 @@ export const MasterPlan: React.FC = () => {
 
         {/* ALWAYS Show Plot & Unit Inspector Drawer whenever ANY shape is clicked */}
         {selectedShape && (
-          <div className="absolute top-4 right-4 w-88 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-3xl shadow-2xl p-5 z-20 animate-in fade-in slide-in-from-right duration-200 flex flex-col max-h-[92%] overflow-y-auto">
+          <div className="relative sm:absolute mt-3 sm:mt-0 sm:top-4 sm:right-4 w-full sm:w-80 md:w-88 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-5 z-20 animate-in fade-in slide-in-from-right duration-200 flex flex-col sm:max-h-[92%] overflow-y-auto">
             {/* Header */}
             <div className="flex items-start justify-between border-b border-slate-800 pb-3">
               <div>

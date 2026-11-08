@@ -146,10 +146,47 @@ html.light div.fixed.inset-0 {
   -webkit-backdrop-filter: blur(6px) !important;
 }
 
-html.light div.fixed.inset-0 > div {
+div.fixed.inset-0 > div:not(.absolute),
+div.fixed.inset-0 > form {
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+html.light div.fixed.inset-0 > div:not(.absolute),
+html.light div.fixed.inset-0 > form {
   background-color: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+}
+
+/* ==========================================================================
+   GLOBAL RESPONSIVE ENGINE (Phones, Tablets & Touch Devices)
+   ========================================================================== */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 639px) {
+  /* Comfortable mobile padding for cards & modals */
+  div.fixed.inset-0 > div:not(.absolute),
+  div.fixed.inset-0 > form {
+    padding: 1.125rem !important;
+    max-height: 90vh;
+  }
+
+  /* Stack 2-column & 3-column form grids inside modals on narrow phone screens */
+  div.fixed.inset-0 .grid-cols-2,
+  div.fixed.inset-0 .grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  /* Keep data tables readable with smooth horizontal touch scroll on phones */
+  table th,
+  table td {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    white-space: nowrap;
+  }
 }
 
 /* ==========================================================================

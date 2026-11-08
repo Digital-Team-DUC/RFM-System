@@ -91,7 +91,7 @@ export const JournalEntries: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
           <h1 className="text-xl font-black text-white flex items-center space-x-2">
             <Split className="w-5 h-5 text-emerald-400" />
@@ -241,14 +241,14 @@ export const JournalEntries: React.FC = () => {
                 </button>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-3 sm:space-y-2">
                 {lines.map((line, idx) => (
-                  <div key={idx} className="flex gap-2 items-center text-xs">
+                  <div key={idx} className="flex flex-wrap sm:flex-nowrap gap-2 items-center text-xs">
                     <select
                       value={line.accountId}
                       onChange={(e) => updateLine(idx, 'accountId', e.target.value)}
                       required
-                      className="w-1/3 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200"
+                      className="w-full sm:w-1/3 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200"
                     >
                       {accounts.map((a) => (
                         <option key={a.id} value={a.id}>
@@ -262,7 +262,7 @@ export const JournalEntries: React.FC = () => {
                       placeholder="Memo"
                       value={line.description}
                       onChange={(e) => updateLine(idx, 'description', e.target.value)}
-                      className="w-1/4 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200"
+                      className="w-full sm:w-1/4 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200"
                     />
 
                     <input
@@ -270,7 +270,7 @@ export const JournalEntries: React.FC = () => {
                       placeholder="Debit ($)"
                       value={line.debit}
                       onChange={(e) => updateLine(idx, 'debit', Number(e.target.value))}
-                      className="w-1/6 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold"
+                      className="w-[42%] sm:w-1/6 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold"
                     />
 
                     <input
@@ -278,7 +278,7 @@ export const JournalEntries: React.FC = () => {
                       placeholder="Credit ($)"
                       value={line.credit}
                       onChange={(e) => updateLine(idx, 'credit', Number(e.target.value))}
-                      className="w-1/6 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold"
+                      className="w-[42%] sm:w-1/6 p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold"
                     />
 
                     {lines.length > 2 && (
@@ -296,7 +296,7 @@ export const JournalEntries: React.FC = () => {
             </div>
 
             {/* Balancing Invariant Status Indicator */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
               <div className="space-x-4">
                 <span>
                   Total Debits:{' '}

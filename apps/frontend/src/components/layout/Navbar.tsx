@@ -14,9 +14,14 @@ import {
   Info,
   Sun,
   Moon,
+  Menu,
 } from 'lucide-react';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenMobileMenu?: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
   const { t, i18n } = useTranslation();
   const { user, logout, selectedProjectId, setSelectedProjectId } = useAuth();
   const { connected } = useSocket();
@@ -69,17 +74,28 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-40">
-      {/* Left: Project Selector */}
-      <div className="flex items-center space-x-3">
-        <div className="flex items-center text-emerald-400 text-sm font-semibold">
+    <header className="h-14 sm:h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between gap-2 sticky top-0 z-40">
+      {/* Left: Mobile Menu Button + Project Selector */}
+      <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+        {/* Hamburger Menu Button for Phone & Tablet */}
+        <button
+          type="button"
+          onClick={onOpenMobileMenu}
+          className="lg:hidden p-1.5 -ml-1 text-slate-300 hover:text-emerald-400 transition shrink-0"
+          aria-label="Open navigation menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        <div className="hidden md:flex items-center text-emerald-400 text-sm font-semibold shrink-0">
           <Building2 className="w-4 h-4 mr-1.5" />
           <span>{t('nav.projects')}:</span>
         </div>
+
         <select
           value={selectedProjectId}
           onChange={(e) => setSelectedProjectId(e.target.value)}
-          className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+          className="bg-slate-800 border border-slate-700 text-slate-200 text-xs sm:text-sm rounded-lg px-2.5 sm:px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium max-w-[155px] xs:max-w-[200px] sm:max-w-[260px] md:max-w-xs truncate"
         >
           <option value="">{t('navbar.allProjects')}</option>
           {projects.map((p) => (
@@ -90,14 +106,14 @@ export const Navbar: React.FC = () => {
         </select>
 
         {/* Real-time Connection Indicator */}
-        <div className="hidden md:flex items-center space-x-1.5 text-xs pl-2">
+        <div className="hidden xl:flex items-center space-x-1.5 text-xs pl-2 shrink-0">
           <span className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`} />
           <span className="text-slate-400 font-mono">{connected ? t('navbar.liveSync') : t('navbar.offline')}</span>
         </div>
       </div>
 
       {/* Right Controls: Theme, Language, Notifications, User Menu */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2.5 sm:space-x-4 shrink-0">
         {/* Theme Mode Switcher (Dark / Light) */}
         <button
           onClick={toggleTheme}
@@ -122,11 +138,12 @@ export const Navbar: React.FC = () => {
         {/* Language Switcher */}
         <button
           onClick={toggleLanguage}
-          className="flex items-center space-x-1.5 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition"
+          className="flex items-center space-x-1 sm:space-x-1.5 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition"
           title="Switch Language"
         >
-          <Globe className="w-4 h-4 text-emerald-400" />
-          <span>{i18n.language === 'en' ? 'ភាសាខ្មែរ (KM)' : 'English (EN)'}</span>
+          <Globe className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="sm:hidden">{i18n.language === 'en' ? 'ខ្មែរ' : 'EN'}</span>
+          <span className="hidden sm:inline">{i18n.language === 'en' ? 'ភាសាខ្មែរ (KM)' : 'English (EN)'}</span>
         </button>
 
         <span className="h-4 w-px bg-slate-800" />
@@ -146,7 +163,7 @@ export const Navbar: React.FC = () => {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden z-50">
+            <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-14 sm:top-auto sm:mt-2 sm:w-80 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden z-50">
               <div className="p-3 border-b border-slate-800 flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   {t('navbar.notifications')}
@@ -193,9 +210,9 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* User Profile & Logout */}
-        <div className="flex items-center space-x-3 pl-3 border-l border-slate-800">
-          <div className="text-right hidden sm:block">
-            <p className="text-sm font-semibold text-slate-200 leading-tight">
+        <div className="flex items-center space-x-2 sm:space-x-3 pl-2 sm:pl-3 border-l border-slate-800">
+          <div className="text-right hidden md:block">
+            <p className="text-xs sm:text-sm font-semibold text-slate-200 leading-tight truncate max-w-[140px]">
               {i18n.language === 'km' && user?.khmerName ? user.khmerName : user?.fullName}
             </p>
             <span className="text-[10px] font-mono uppercase text-emerald-400 font-semibold">
